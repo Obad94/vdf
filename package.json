@@ -1,43 +1,73 @@
 {
   "name": "@subspace/vdf",
-  "description": "",
+  "description": "High-performance WebAssembly implementation of Verifiable Delay Functions (VDF) supporting Pietrzak and Wesolowski algorithms",
   "keywords": [
     "crypto",
+    "cryptography",
     "webassembly",
     "wasm",
     "emscripten",
-    "vdf"
+    "vdf",
+    "verifiable-delay-function",
+    "pietrzak",
+    "wesolowski",
+    "proof-of-time",
+    "blockchain"
   ],
   "version": "0.1.0",
-  "homepage": "https://github.com/subspace/vdf",
+  "homepage": "https://github.com/your-username/vdf",
   "author": "Nazar Mokrynskyi <nazar@mokrynskyi.com>",
   "repository": {
     "type": "git",
-    "url": "git://github.com/subspace/vdf.git"
+    "url": "git://github.com/your-username/vdf.git"
   },
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
     "build": "./build.sh",
+    "build:prod": "NODE_ENV=production ./build.sh",
     "clean": "rm -rf dist target",
     "lint": "tslint --project .",
-    "test": "npm run build && ts-node node_modules/.bin/tape tests/**/*.ts",
-    "test-only": "ts-node node_modules/.bin/tape tests/**/*.ts"
+    "lint:fix": "tslint --project . --fix",
+    "test": "npm run build && npm run test-only",
+    "test-only": "ts-node node_modules/.bin/tape tests/**/*.ts",
+    "test:coverage": "nyc npm run test-only",
+    "prepublishOnly": "npm run clean && npm run build:prod && npm test",
+    "verify": "node -e \"const vdf = require('./dist/index.js'); vdf().then(() => console.log('✅ VDF library verified'));\""
   },
   "dependencies": {
-    "@types/node": "^11.13.4",
-    "arg": "^5.0.2"
+    "@types/node": "^16.18.0"
   },
   "devDependencies": {
     "@types/tape": "^4.2.33",
-    "tape": "^4.10.1",
-    "ts-node": "^8.1.0",
-    "tslint": "^5.16.0",
-    "typescript": "^3.4.4",
+    "nyc": "^15.1.0",
+    "tape": "^5.0.0",
+    "ts-node": "^10.9.0",
+    "tslint": "^6.1.3",
+    "typescript": "^4.9.0",
     "uglify-es": "^3.3.9"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "dist/**",
+      "tests/**"
+    ],
+    "reporter": [
+      "html",
+      "text"
+    ]
   }
 }
