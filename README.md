@@ -1,6 +1,27 @@
 # VDF (Verifiable Delay Function) WebAssembly Library
 
+> **Forked and Updated from [autonomys/vdf](https://github.com/autonomys/vdf)**  
+> Original repository archived in 2022 - This fork brings the VDF library back to life with modern compatibility and fixes.
+
 A high-performance WebAssembly implementation of Verifiable Delay Functions (VDF) supporting both Pietrzak and Wesolowski algorithms. This library allows you to generate and verify cryptographic proofs that require a specific number of sequential iterations, making it useful for time-locked proofs and proof-of-time mechanisms.
+
+## Credits
+
+This project is a fork of the original VDF WebAssembly library created by **Nazar Mokrynskyi** and the **Autonomys** team. The original work provided the foundation for:
+- Rust-based VDF implementations (Pietrzak and Wesolowski algorithms)
+- WebAssembly bindings and memory management
+- TypeScript wrapper interfaces
+
+### Original Contributors
+- **Nazar Mokrynskyi** - Original author and primary developer
+- **Autonomys Team** - Project maintainers and contributors
+
+### Current Maintainer
+This fork is maintained to address compatibility issues and bring the library up to modern standards with:
+- Node.js 16+ compatibility
+- Updated build processes and documentation
+- Bug fixes for buffer reference issues
+- Enhanced Ubuntu/Linux support
 
 ## Features
 
@@ -10,6 +31,26 @@ A high-performance WebAssembly implementation of Verifiable Delay Functions (VDF
 - ✅ **Node.js & Browser Support** - Universal JavaScript compatibility
 - ✅ **TypeScript Support** - Full type definitions included
 - ✅ **Memory Management** - Automatic cleanup of WebAssembly memory
+- ✅ **Modern Compatibility** - Node.js 16+ and Ubuntu 20.04+ support
+
+## What's New in This Fork
+
+### 🔧 **Bug Fixes**
+- Fixed buffer reference errors in WebAssembly memory allocation
+- Resolved Node.js compatibility issues with optional chaining operators
+- Corrected TypeScript linting and compilation errors
+
+### 🚀 **Improvements**
+- Updated to Node.js 16+ for modern JavaScript features
+- Enhanced build scripts with automatic buffer reference fixing
+- Comprehensive Ubuntu Linux build instructions
+- Improved error handling and debugging capabilities
+
+### 📚 **Documentation**
+- Complete installation guide for Ubuntu/Linux
+- Step-by-step build instructions with troubleshooting
+- Performance testing examples and optimization tips
+- Advanced configuration options
 
 ## Prerequisites
 
@@ -133,53 +174,49 @@ sudo apt install -y python3-setuptools
 sudo apt install -y libc6-dev pkg-config libssl-dev
 ```
 
-## Project Setup
-
-### 1. Clone and Setup Project
+## Quick Start
 
 ```bash
-# Navigate to your projects directory
-cd ~
-mkdir -p ~/projects
-cd ~/projects
-
-# Clone the repository
-git clone <your-vdf-repo-url>
+# Clone this fork
+git clone https://github.com/your-username/vdf.git
 cd vdf
 
 # Install Node.js dependencies
 npm install
 
-# Install missing dependencies if needed
-npm install arg
+# Build everything (WebAssembly + TypeScript + Tests)
+npm run build
+
+# Run tests
+npm test
 ```
 
-### 2. Configure Rust/WebAssembly Build
+## Build Commands
 
-The project includes pre-configured build settings:
+### Complete Build Process
 
-**Cargo.toml**:
-```toml
-[package]
-name = "vdf"
-version = "0.1.0"
-authors = ["Your Name <email@example.com>"]
-edition = "2021"
+```bash
+# Method 1: Using npm build script (recommended)
+npm run build
 
-[dependencies]
-vdf = "0.1"
+# Method 2: Using the build script directly
+./build.sh
+
+# Method 3: Manual step-by-step build
+source ~/tools/emsdk/emsdk_env.sh
+cargo clean
+cargo build --target wasm32-unknown-emscripten
+sed -i 's/new as(buffer,pointer,size\/as\.BYTES_PER_ELEMENT)/new as(HEAPU8.buffer,pointer,size\/as.BYTES_PER_ELEMENT)/g' src/vdf.js
+npx tslint --project .
+npx tsc
+mkdir -p dist
+npx uglify-es dist/index.js > dist/index.min.js
+cp src/vdf.* dist/
 ```
 
-**.cargo/config.toml**:
-```toml
-[target.wasm32-unknown-emscripten]
-rustflags = [
-  "-C", 
-  "link-args=-L .cache/lib --closure 0 -Oz --llvm-lto 3 -s EXPORTED_RUNTIME_METHODS=[] -s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=[] -s EXPORTED_FUNCTIONS=['_malloc','_free','_generate','_verify'] -s MODULARIZE=1 -s WASM=1 --post-js src/bytes_allocation.js"
-]
-```
+### Individual Build Steps
 
-### 3. Build WebAssembly Module
+#### 1. WebAssembly Build
 
 ```bash
 # Ensure Emscripten environment is loaded
@@ -188,86 +225,319 @@ source ~/tools/emsdk/emsdk_env.sh
 # Clean previous builds
 cargo clean
 
-# Build WebAssembly module
+# Debug build (faster compilation)
 cargo build --target wasm32-unknown-emscripten
 
-# The build generates:
-# - src/vdf.js (JavaScript wrapper)
-# - src/vdf.wasm (WebAssembly binary)
+# Release build (optimized, slower compilation)
+cargo build --target wasm32-unknown-emscripten --release
+
+# Check build output
+ls -la target/wasm32-unknown-emscripten/debug/
 ```
 
-### 4. Fix Buffer Reference Issue (if needed)
+#### 2. Fix Buffer References
 
 ```bash
-# If you encounter buffer reference errors, manually fix them
+# Fix buffer reference issues in generated JavaScript
 sed -i 's/new as(buffer,pointer,size\/as\.BYTES_PER_ELEMENT)/new as(HEAPU8.buffer,pointer,size\/as.BYTES_PER_ELEMENT)/g' src/vdf.js
+
+# Verify the fix was applied
+grep -n "HEAPU8.buffer" src/vdf.js
 ```
 
-### 5. Build JavaScript Library
+#### 3. TypeScript Compilation
 
 ```bash
-# Build the complete library
+# Lint TypeScript code
+npx tslint --project .
+
+# Compile TypeScript to JavaScript
+npx tsc
+
+# Check compiled output
+ls -la dist/
+```
+
+#### 4. Minification and Packaging
+
+```bash
+# Create distribution directory
+mkdir -p dist
+
+# Minify JavaScript (optional for production)
+npx uglify-es dist/index.js > dist/index.min.js
+
+# Copy WebAssembly files to distribution
+cp src/vdf.js dist/
+cp src/vdf.wasm dist/
+
+# Verify distribution contents
+ls -la dist/
+```
+
+### Cargo-Specific Commands
+
+```bash
+# Build with different optimization levels
+cargo build --target wasm32-unknown-emscripten                    # Debug build
+cargo build --target wasm32-unknown-emscripten --release          # Release build
+
+# Clean build artifacts
+cargo clean
+
+# Check Rust code without building
+cargo check --target wasm32-unknown-emscripten
+
+# Run Rust tests (if any)
+cargo test
+
+# Update dependencies
+cargo update
+
+# Show dependency tree
+cargo tree
+
+# Build with verbose output for debugging
+cargo build --target wasm32-unknown-emscripten --verbose
+
+# Check for specific target availability
+rustup target list | grep wasm32-unknown-emscripten
+```
+
+### npm Scripts Available
+
+```bash
+# Build everything (WebAssembly + TypeScript + packaging)
 npm run build
 
-# This runs:
-# 1. npm run clean    - Remove dist folder
-# 2. npm run lint     - TypeScript linting  
-# 3. npm run compile  - Compile TypeScript
-# 4. npm run minify   - Minify JavaScript
-# 5. npm run copy-wasm-js - Copy WebAssembly files
+# Clean build artifacts
+npm run clean
+
+# Run TypeScript linter only
+npm run lint
+
+# Run tests (includes full build)
+npm test
+
+# Run tests without rebuilding
+npm run test-only
+
+# Individual steps (if you modify package.json to include them)
+npm run build-wasm      # Would run: source emsdk && cargo build
+npm run fix-buffer      # Would run: sed command for buffer fix
+npm run compile         # Would run: tsc
+npm run minify          # Would run: uglify-es
 ```
 
 ## Testing
 
-### Run Tests
+### Run All Tests
 
 ```bash
-# Run all tests (includes linting)
+# Complete test suite (includes build + lint + tests)
 npm test
 
-# Run tests without linting (for development)
+# Test output should show:
+# TAP version 13
+# # Basic test
+# ok 1 Proof generated correctly
+# ok 2 Proof is valid
+# ok 3 Proof is not valid #1
+# ok 4 Proof is not valid #2
+# 1..4
+# # tests 4
+# # pass  4
+# # ok
+```
+
+### Test Individual Components
+
+```bash
+# Run only TypeScript tests (skip build)
+npm run test-only
+
+# Run with verbose output
 ./node_modules/.bin/ts-node ./node_modules/.bin/tape tests/**/*.ts
 
-# If you get permission errors, make the script executable
-chmod +x ./node_modules/.bin/ts-node
-chmod +x ./node_modules/.bin/tape
+# Test with debugging
+node --inspect-brk ./node_modules/.bin/ts-node ./node_modules/.bin/tape tests/basic.ts
+
+# Check if WebAssembly files exist
+ls -la src/vdf.*
+ls -la dist/vdf.*
+
+# Verify memory allocation functions are available
+node -e "
+const vdf = require('./dist/index.js');
+vdf().then(instance => {
+  console.log('Available functions:', Object.keys(instance._lib_internal));
+  console.log('allocateBytes:', typeof instance._lib_internal.allocateBytes);
+  console.log('_generate:', typeof instance._lib_internal._generate);
+  console.log('_verify:', typeof instance._lib_internal._verify);
+});
+"
 ```
 
-### Test Output
+## Development Workflow
 
-Successful test output should show:
-```
-TAP version 13
-# Basic test
-Available properties: [
-  '_generate', '_verify', '_malloc', '_free',
-  'calledRun', 'createPointer', 'allocatePointer',
-  'allocateBytes', 'freeBytes'
-]
-allocatePointer available: function
-allocateBytes available: function
-_malloc available: function
-_free available: function
-ok 1 Proof generated correctly
-ok 2 Proof is valid
-ok 3 Proof is not valid #1
-ok 4 Proof is not valid #2
+### Complete Development Setup
 
-1..4
-# tests 4
-# pass  4
+```bash
+# 1. Initial setup
+git clone https://github.com/your-username/vdf.git
+cd vdf
+npm install
 
-# ok
+# 2. Setup environment (run once per session)
+source ~/tools/emsdk/emsdk_env.sh
+
+# 3. Development cycle
+npm run build    # Build everything
+npm test         # Run tests
+# Make changes to src/main.rs or src/index.ts
+npm run build    # Rebuild
+npm test         # Test again
 ```
 
-## Usage
+### Iterative Development
 
-### Basic Example
+```bash
+# For Rust changes
+cargo build --target wasm32-unknown-emscripten
+sed -i 's/new as(buffer,pointer,size\/as\.BYTES_PER_ELEMENT)/new as(HEAPU8.buffer,pointer,size\/as.BYTES_PER_ELEMENT)/g' src/vdf.js
+npm run test-only
+
+# For TypeScript changes
+npx tsc
+npm run test-only
+
+# For testing only
+npm run test-only
+```
+
+### Performance Testing
+
+```bash
+# Build optimized version
+cargo build --target wasm32-unknown-emscripten --release
+sed -i 's/new as(buffer,pointer,size\/as\.BYTES_PER_ELEMENT)/new as(HEAPU8.buffer,pointer,size\/as.BYTES_PER_ELEMENT)/g' src/vdf.js
+
+# Test with different parameters
+node -e "
+const vdf = require('./dist/index.js');
+vdf().then(async instance => {
+  console.time('VDF Generation');
+  const proof = instance.generate(1000, new Uint8Array([0xaa]), 2048, false);
+  console.timeEnd('VDF Generation');
+  
+  console.time('VDF Verification');
+  const isValid = instance.verify(1000, new Uint8Array([0xaa]), proof, 2048, false);
+  console.timeEnd('VDF Verification');
+  
+  console.log('Proof valid:', isValid);
+});
+"
+```
+
+## Troubleshooting
+
+### Common Issues Fixed in This Fork
+
+**1. Buffer Reference Errors (FIXED)**
+```
+ReferenceError: buffer is not defined
+```
+**Solution**: Automatically fixed by build script using `HEAPU8.buffer`
+
+**2. Optional Chaining Syntax Error (FIXED)**
+```
+SyntaxError: Unexpected token '.'
+```
+**Solution**: Requires Node.js 16+ which supports optional chaining (`?.`)
+
+**3. Build Dependencies Missing (DOCUMENTED)**
+**Solution**: Complete installation guide provided for Ubuntu/Linux
+
+### Build Issues
+
+**1. Emscripten not found**
+```bash
+# Check if emcc is available
+which emcc
+
+# Reload environment
+source ~/tools/emsdk/emsdk_env.sh
+
+# Reinstall if needed
+cd ~/tools/emsdk
+./emsdk install latest
+./emsdk activate latest
+```
+
+**2. Rust target missing**
+```bash
+# Add WebAssembly target
+rustup target add wasm32-unknown-emscripten
+
+# List available targets
+rustup target list | grep wasm
+
+# Update Rust
+rustup update
+```
+
+**3. Node.js version issues**
+```bash
+# Check Node.js version
+node --version
+
+# Should be 16.x.x or higher
+# Update if needed using nvm
+nvm install 16
+nvm use 16
+```
+
+**4. Permission errors**
+```bash
+# Fix permissions for npm scripts
+chmod +x build.sh
+find node_modules/.bin -type f -exec chmod +x {} \;
+
+# Or run with explicit node
+node node_modules/.bin/ts-node node_modules/.bin/tape tests/**/*.ts
+```
+
+### Debugging Build Process
+
+```bash
+# Enable verbose output
+export EMCC_DEBUG=1
+cargo build --target wasm32-unknown-emscripten --verbose
+
+# Check generated files
+ls -la src/vdf.*
+file src/vdf.wasm
+head -20 src/vdf.js
+
+# Test memory allocation functions
+node -e "
+const vdf = require('./src/vdf.js');
+vdf().then(instance => {
+  console.log('Module loaded successfully');
+  console.log('Available functions:', Object.getOwnPropertyNames(instance));
+  console.log('allocateBytes type:', typeof instance.allocateBytes);
+});
+"
+```
+
+## Usage Examples
+
+### Basic VDF Generation and Verification
 
 ```typescript
 import vdf from '@subspace/vdf';
 
-async function example() {
+async function basicExample() {
     // Initialize the VDF library
     const vdfInstance = await vdf();
     
@@ -278,16 +548,20 @@ async function example() {
     const isPietrzak = false; // Use Wesolowski algorithm
     
     // Generate proof
+    console.time('VDF Generation');
     const proof = vdfInstance.generate(
         iterations,
         challenge,
         intSizeBits,
         isPietrzak
     );
+    console.timeEnd('VDF Generation');
     
-    console.log('Generated proof:', proof);
+    console.log('Generated proof length:', proof.length);
+    console.log('Generated proof (hex):', Buffer.from(proof).toString('hex'));
     
     // Verify proof
+    console.time('VDF Verification');
     const isValid = vdfInstance.verify(
         iterations,
         challenge,
@@ -295,14 +569,54 @@ async function example() {
         intSizeBits,
         isPietrzak
     );
+    console.timeEnd('VDF Verification');
     
     console.log('Proof is valid:', isValid);
 }
 
-example().catch(console.error);
+basicExample().catch(console.error);
 ```
 
-### Algorithm Selection
+### Testing Different Algorithms
+
+```javascript
+const vdf = require('@subspace/vdf');
+
+async function compareAlgorithms() {
+    const vdfInstance = await vdf();
+    const challenge = new Uint8Array([0x12, 0x34, 0x56]);
+    const iterations = 1000; // Must be even for Pietrzak
+    const intSizeBits = 2048;
+    
+    // Test Wesolowski VDF
+    console.log('Testing Wesolowski VDF...');
+    console.time('Wesolowski Generation');
+    const wesolowskiProof = vdfInstance.generate(iterations, challenge, intSizeBits, false);
+    console.timeEnd('Wesolowski Generation');
+    
+    console.time('Wesolowski Verification');
+    const wesolowskiValid = vdfInstance.verify(iterations, challenge, wesolowskiProof, intSizeBits, false);
+    console.timeEnd('Wesolowski Verification');
+    
+    // Test Pietrzak VDF
+    console.log('Testing Pietrzak VDF...');
+    console.time('Pietrzak Generation');
+    const pietrzakProof = vdfInstance.generate(iterations, challenge, intSizeBits, true);
+    console.timeEnd('Pietrzak Generation');
+    
+    console.time('Pietrzak Verification');
+    const pietrzakValid = vdfInstance.verify(iterations, challenge, pietrzakProof, intSizeBits, true);
+    console.timeEnd('Pietrzak Verification');
+    
+    console.log('Results:');
+    console.log('- Wesolowski proof length:', wesolowskiProof.length, 'valid:', wesolowskiValid);
+    console.log('- Pietrzak proof length:', pietrzakProof.length, 'valid:', pietrzakValid);
+}
+
+compareAlgorithms().catch(console.error);
+```
+
+## Algorithm Selection
 
 **Wesolowski VDF** (Default):
 - More flexible iteration requirements
@@ -331,99 +645,6 @@ const proof2 = vdfInstance.generate(1000, challenge, 2048, true);
   - Higher = longer proof generation time
   - Must be even and ≥ 66 for Pietrzak
 
-## Troubleshooting
-
-### Common Issues
-
-**1. Permission Denied Errors**
-```bash
-# Fix permissions for node_modules binaries
-find node_modules/.bin -type f -exec chmod +x {} \;
-
-# Or run with explicit node
-node node_modules/.bin/ts-node node_modules/.bin/tape tests/**/*.ts
-```
-
-**2. Emscripten Environment Not Found**
-```bash
-# Reload Emscripten environment
-source ~/tools/emsdk/emsdk_env.sh
-
-# Check if emcc is available
-which emcc
-
-# If not found, reinstall emscripten
-cd ~/tools/emsdk
-./emsdk install latest
-./emsdk activate latest
-```
-
-**3. Rust Target Missing**
-```bash
-# Add WebAssembly target
-rustup target add wasm32-unknown-emscripten
-
-# Update Rust if needed
-rustup update
-```
-
-**4. Optional Chaining Syntax Error**
-```
-SyntaxError: Unexpected token '.'
-```
-**Solution**: Upgrade to Node.js 16+ which supports optional chaining (`?.`)
-
-**5. Buffer Reference Error**
-```
-ReferenceError: buffer is not defined
-```
-**Solution**: Run the sed command to fix buffer references:
-```bash
-sed -i 's/new as(buffer,pointer,size\/as\.BYTES_PER_ELEMENT)/new as(HEAPU8.buffer,pointer,size\/as.BYTES_PER_ELEMENT)/g' src/vdf.js
-```
-
-**6. Build Dependencies Missing**
-```bash
-# Install missing build dependencies
-sudo apt install -y build-essential cmake python3-dev libffi-dev
-
-# For older Ubuntu versions
-sudo apt install -y python-dev
-```
-
-### Debug Mode
-
-To enable debug output, modify `src/index.ts`:
-
-```typescript
-// Debug: Check what's available on the module
-console.log('Available properties:', Object.getOwnPropertyNames(libInstance));
-console.log('allocatePointer available:', typeof libInstance.allocatePointer);
-```
-
-### Performance Optimization
-
-For production builds:
-
-1. **Optimize Rust build**:
-```bash
-cargo build --target wasm32-unknown-emscripten --release
-```
-
-2. **Enable WebAssembly optimizations** in `.cargo/config.toml`:
-```toml
-rustflags = [
-  "-C", "link-args=... -O3 --llvm-lto 3 ..."
-]
-```
-
-3. **Clear build caches if needed**:
-```bash
-cargo clean
-rm -rf node_modules/.cache
-rm -rf dist
-```
-
 ## File Structure
 
 ```
@@ -432,126 +653,96 @@ vdf/
 │   ├── main.rs              # Rust WebAssembly exports
 │   ├── index.ts             # TypeScript wrapper
 │   ├── bytes_allocation.js  # Memory management helpers
-│   ├── vdf.js              # Generated JavaScript (build)
-│   └── vdf.wasm            # Generated WebAssembly (build)
+│   ├── vdf.js              # Generated JavaScript (from cargo build)
+│   └── vdf.wasm            # Generated WebAssembly (from cargo build)
 ├── tests/
 │   └── basic.ts            # Test suite
-├── dist/                   # Built library (npm run build)
+├── dist/                   # Built library (from npm run build)
+│   ├── index.js            # Compiled TypeScript
+│   ├── index.d.ts          # TypeScript definitions
+│   ├── index.min.js        # Minified JavaScript
+│   ├── vdf.js              # Copied from src/
+│   └── vdf.wasm            # Copied from src/
+├── target/                 # Rust build artifacts (from cargo build)
+│   └── wasm32-unknown-emscripten/
 ├── .cargo/
 │   └── config.toml         # Rust build configuration
+├── build.sh                # Build script (chmod +x)
 ├── Cargo.toml              # Rust package configuration
 ├── package.json            # Node.js package configuration
 ├── tsconfig.json           # TypeScript configuration
 ├── tslint.json            # TypeScript linting rules
+├── .gitignore              # Git ignore rules
 └── README.md              # This file
 ```
 
-## Development Workflow
+## Troubleshooting
 
-### Complete Build Process
+### Common Issues Fixed in This Fork
 
+**1. Buffer Reference Errors (FIXED)**
+```
+ReferenceError: buffer is not defined
+```
+**Solution**: Automatically fixed by build script using `HEAPU8.buffer`
+
+**2. Optional Chaining Syntax Error (FIXED)**
+```
+SyntaxError: Unexpected token '.'
+```
+**Solution**: Requires Node.js 16+ which supports optional chaining (`?.`)
+
+**3. Build Dependencies Missing (DOCUMENTED)**
+**Solution**: Complete installation guide provided for Ubuntu/Linux
+
+### Build Issues
+
+**1. Emscripten not found**
 ```bash
-# 1. Ensure environment is set up
+# Check if emcc is available
+which emcc
+
+# Reload environment
 source ~/tools/emsdk/emsdk_env.sh
 
-# 2. Clean everything
-cargo clean
-rm -rf dist node_modules/.cache
-
-# 3. Build WebAssembly
-cargo build --target wasm32-unknown-emscripten
-
-# 4. Fix buffer references if needed
-sed -i 's/new as(buffer,pointer,size\/as\.BYTES_PER_ELEMENT)/new as(HEAPU8.buffer,pointer,size\/as.BYTES_PER_ELEMENT)/g' src/vdf.js
-
-# 5. Build JavaScript library
-npm run build
-
-# 6. Run tests
-npm test
+# Reinstall if needed
+cd ~/tools/emsdk
+./emsdk install latest
+./emsdk activate latest
 ```
 
-### Continuous Development
-
+**2. Rust target missing**
 ```bash
-# Watch for changes and rebuild (if you have nodemon installed)
-npm install -g nodemon
-nodemon --watch src --ext rs,ts,js --exec "cargo build --target wasm32-unknown-emscripten && npm run build"
+# Add WebAssembly target
+rustup target add wasm32-unknown-emscripten
+
+# List available targets
+rustup target list | grep wasm
+
+# Update Rust
+rustup update
 ```
 
-## Ubuntu-Specific Notes
-
-### Ubuntu 18.04 LTS
-- May need to install newer cmake: `sudo snap install cmake --classic`
-- Python 3.6+ required: `sudo apt install python3.8 python3.8-dev`
-
-### Ubuntu 20.04 LTS
-- Default packages should work fine
-- Recommended for best compatibility
-
-### Ubuntu 22.04 LTS
-- All dependencies available in default repositories
-- Best performance and compatibility
-
-### WSL2 on Windows
-If running on Windows Subsystem for Linux:
+**3. Node.js version issues**
 ```bash
-# Update WSL2 to latest version
-wsl --update
+# Check Node.js version
+node --version
 
-# Install Windows Terminal for better experience
-# Available from Microsoft Store
-
-# All Linux commands work the same in WSL2
+# Should be 16.x.x or higher
+# Update if needed using nvm
+nvm install 16
+nvm use 16
 ```
 
-## Contributing
+**4. Permission errors**
+```bash
+# Fix permissions for npm scripts
+chmod +x build.sh
+find node_modules/.bin -type f -exec chmod +x {} \;
 
-1. Fork the repository
-2. Install development dependencies: `npm install`
-3. Make your changes
-4. Run tests: `npm test`
-5. Build the library: `npm run build`
-6. Submit a pull request
-
-## License
-
-MIT License - see LICENSE file for details
-
-## Support
-
-For issues and questions:
-1. Check the troubleshooting section above
-2. Review existing GitHub issues
-3. Create a new issue with detailed error messages and system information
-4. Include your Ubuntu version: `lsb_release -a`
-5. Include Node.js version: `node --version`
-6. Include Rust version: `rustc --version`
-
----
-
-**Note**: This library requires modern JavaScript features and Node.js 16+. All commands have been tested on Ubuntu 20.04 LTS and newer versions.
-
-## Version History
-
-### v0.1.0
-- Initial release
-- Support for Pietrzak and Wesolowski VDF algorithms
-- WebAssembly implementation with Rust backend
-- Node.js 16+ compatibility
-- TypeScript support
-- Comprehensive test suite
-- Fixed buffer reference issues in memory allocation
-- Proper cleanup of WebAssembly memory
-- Ubuntu Linux compatibility
-
-## Security Considerations
-
-- This library implements cryptographic functions that require careful parameter selection
-- Use appropriate iteration counts for your security requirements
-- RSA modulus sizes of 2048 bits or higher are recommended for production use
-- Always verify proofs before accepting them as valid
-- Be aware of timing attacks and implement appropriate countermeasures if needed
+# Or run with explicit node
+node node_modules/.bin/ts-node node_modules/.bin/tape tests/**/*.ts
+```
 
 ## Performance Notes
 
@@ -560,3 +751,69 @@ For issues and questions:
 - WebAssembly provides near-native performance for cryptographic operations
 - Consider running intensive operations in Web Workers to avoid blocking the main thread
 - Build times may be longer on lower-end hardware (4+ CPU cores recommended)
+
+## Contributing
+
+We welcome contributions to this fork! The original project was archived, so this is now the active development branch.
+
+1. Fork this repository
+2. Install development dependencies: `npm install`
+3. Make your changes to `src/main.rs` or `src/index.ts`
+4. Run tests: `npm test`
+5. Build the library: `npm run build`
+6. Submit a pull request
+
+### Areas for Contribution
+- Further Node.js and browser compatibility improvements
+- Performance optimizations
+- Additional VDF algorithm implementations
+- Enhanced error handling and debugging
+- Cross-platform build support (Windows, macOS)
+
+## License
+
+MIT License - see LICENSE file for details
+
+This fork maintains the same MIT license as the original project by Autonomys/Nazar Mokrynskyi.
+
+## Original Repository
+
+- **Original Repository**: [autonomys/vdf](https://github.com/autonomys/vdf) (archived)
+- **Original Author**: Nazar Mokrynskyi <nazar@mokrynskyi.com>
+- **Archived**: 2022
+- **This Fork**: Brings the project back to life with modern compatibility
+
+## Support
+
+For issues and questions about this fork:
+1. Check the troubleshooting section above
+2. Review existing GitHub issues in this repository
+3. Create a new issue with detailed error messages and system information
+4. Include your Ubuntu version: `lsb_release -a`
+5. Include Node.js version: `node --version`
+6. Include Rust version: `rustc --version`
+7. Include build output and error messages
+
+For historical context about the original implementation, refer to the [archived repository](https://github.com/autonomys/vdf).
+
+---
+
+**Note**: This library requires modern JavaScript features and Node.js 16+. All commands have been tested on Ubuntu 20.04 LTS and newer versions. This fork addresses the compatibility issues that prevented the original library from working with modern Node.js versions.
+
+## Changelog
+
+### Fork Updates (2024)
+- ✅ Fixed buffer reference errors in WebAssembly memory allocation
+- ✅ Added Node.js 16+ compatibility
+- ✅ Enhanced build scripts with automatic fixes
+- ✅ Complete Ubuntu/Linux installation documentation
+- ✅ Improved error handling and debugging
+- ✅ All tests now pass consistently
+- ✅ Modern TypeScript compilation support
+
+### Original Version (2022 and earlier)
+- Initial Rust implementation of VDF algorithms
+- WebAssembly bindings and compilation
+- TypeScript wrapper interface
+- Basic test suite
+- Memory management helpers
