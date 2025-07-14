@@ -1,48 +1,39 @@
+
+*.backup
+# Backup files
+*.bak
+# Build outputs
+.cache/
+Cargo.lock
+dist/
+.DS_Store
+# Emscripten SDK (should be installed globally, not in project)
+emsdk/
+.env
+.env.development.local
+# Environment files
+.env.local
+.env.production.local
+.env.test.local
+fresh_target/
+.idea/
+# IDE files
+*.log
+# Logs
 # Node.js dependencies
 node_modules/
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Build outputs
-dist/
-target/
-fresh_target/
-.cache/
-
-# WebAssembly generated files (keep source, ignore generated)
+# OS files
+# Rust build artifacts
 src/vdf.js
 src/vdf.wasm
-
-# Emscripten SDK (should be installed globally, not in project)
-emsdk/
-
-# TypeScript build info
-*.tsbuildinfo
-
-# IDE files
-.vscode/
-.idea/
-*.swp
 *.swo
-
-# OS files
-.DS_Store
+*.swp
+target/
 Thumbs.db
-
-# Logs
-*.log
-
-# Environment files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Backup files
-*.backup
-*.bak
-
-# Rust build artifacts
-Cargo.lock
+*.tsbuildinfo
+# TypeScript build info
+.vscode/
+# WebAssembly generated files (keep source, ignore generated)
+yarn-debug.log*
+yarn-error.log*
