@@ -1,0 +1,8 @@
+[package]
+name = "vdf"
+version = "0.1.0"
+authors = ["Nazar Mokrynskyi <nazar@mokrynskyi.com>"]
+edition = "2021"
+
+[dependencies]
+vdf = "0.1"
