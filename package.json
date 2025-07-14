@@ -15,11 +15,14 @@
     "blockchain"
   ],
   "version": "0.1.0",
-  "homepage": "https://github.com/your-username/vdf",
+  "homepage": "https://github.com/Obad94/vdf",
   "author": "Nazar Mokrynskyi <nazar@mokrynskyi.com>",
+  "contributors": [
+    "Obad94 <obad94@github> (Current Fork Maintainer 2025)"
+  ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/your-username/vdf.git"
+    "url": "git://github.com/Obad94/vdf.git"
   },
   "license": "MIT",
   "main": "dist/index.js",

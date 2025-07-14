@@ -13,15 +13,19 @@ This project is a fork of the original VDF WebAssembly library created by **Naza
 - TypeScript wrapper interfaces
 
 ### Original Contributors
+- **Subspace Labs** (2019) - Original copyright holders
 - **Nazar Mokrynskyi** - Original author and primary developer
 - **Autonomys Team** - Project maintainers and contributors
 
-### Current Maintainer
-This fork is maintained to address compatibility issues and bring the library up to modern standards with:
+### Current Fork Maintainer
+- **Obad94** (2025) - Fork maintainer who brought the project back to life
+
+This fork is maintained by [Obad94](https://github.com/Obad94) to address compatibility issues and bring the library up to modern standards with:
 - Node.js 16+ compatibility
 - Updated build processes and documentation
 - Bug fixes for buffer reference issues
 - Enhanced Ubuntu/Linux support
+- Production-ready enhancements
 
 ## Features
 
@@ -676,85 +680,9 @@ vdf/
 └── README.md              # This file
 ```
 
-## Troubleshooting
-
-### Common Issues Fixed in This Fork
-
-**1. Buffer Reference Errors (FIXED)**
-```
-ReferenceError: buffer is not defined
-```
-**Solution**: Automatically fixed by build script using `HEAPU8.buffer`
-
-**2. Optional Chaining Syntax Error (FIXED)**
-```
-SyntaxError: Unexpected token '.'
-```
-**Solution**: Requires Node.js 16+ which supports optional chaining (`?.`)
-
-**3. Build Dependencies Missing (DOCUMENTED)**
-**Solution**: Complete installation guide provided for Ubuntu/Linux
-
-### Build Issues
-
-**1. Emscripten not found**
-```bash
-# Check if emcc is available
-which emcc
-
-# Reload environment
-source ~/tools/emsdk/emsdk_env.sh
-
-# Reinstall if needed
-cd ~/tools/emsdk
-./emsdk install latest
-./emsdk activate latest
-```
-
-**2. Rust target missing**
-```bash
-# Add WebAssembly target
-rustup target add wasm32-unknown-emscripten
-
-# List available targets
-rustup target list | grep wasm
-
-# Update Rust
-rustup update
-```
-
-**3. Node.js version issues**
-```bash
-# Check Node.js version
-node --version
-
-# Should be 16.x.x or higher
-# Update if needed using nvm
-nvm install 16
-nvm use 16
-```
-
-**4. Permission errors**
-```bash
-# Fix permissions for npm scripts
-chmod +x build.sh
-find node_modules/.bin -type f -exec chmod +x {} \;
-
-# Or run with explicit node
-node node_modules/.bin/ts-node node_modules/.bin/tape tests/**/*.ts
-```
-
-## Performance Notes
-
-- Proof generation time increases linearly with iteration count
-- Higher RSA modulus sizes significantly impact performance
-- WebAssembly provides near-native performance for cryptographic operations
-- Consider running intensive operations in Web Workers to avoid blocking the main thread
-- Build times may be longer on lower-end hardware (4+ CPU cores recommended)
-
 ## Contributing
 
-We welcome contributions to this fork! The original project was archived, so this is now the active development branch.
+We welcome contributions to this fork! The original project was archived, so this is now the active development branch maintained by [Obad94](https://github.com/Obad94).
 
 1. Fork this repository
 2. Install development dependencies: `npm install`
@@ -774,20 +702,23 @@ We welcome contributions to this fork! The original project was archived, so thi
 
 MIT License - see LICENSE file for details
 
-This fork maintains the same MIT license as the original project by Autonomys/Nazar Mokrynskyi.
+This fork maintains the same MIT license as the original project:
+- **Original Copyright**: Subspace Labs (2019)
+- **Current Fork**: Obad94 (2025)
+- **Original Authors**: Nazar Mokrynskyi and Autonomys Team
 
 ## Original Repository
 
 - **Original Repository**: [autonomys/vdf](https://github.com/autonomys/vdf) (archived)
 - **Original Author**: Nazar Mokrynskyi <nazar@mokrynskyi.com>
 - **Archived**: 2022
-- **This Fork**: Brings the project back to life with modern compatibility
+- **This Fork**: [github.com/Obad94/vdf](https://github.com/Obad94/vdf) - Maintained by Obad94
 
 ## Support
 
 For issues and questions about this fork:
 1. Check the troubleshooting section above
-2. Review existing GitHub issues in this repository
+2. Review existing GitHub issues in this repository: [github.com/Obad94/vdf/issues](https://github.com/Obad94/vdf/issues)
 3. Create a new issue with detailed error messages and system information
 4. Include your Ubuntu version: `lsb_release -a`
 5. Include Node.js version: `node --version`
@@ -802,7 +733,7 @@ For historical context about the original implementation, refer to the [archived
 
 ## Changelog
 
-### Fork Updates (2024)
+### Fork Updates by Obad94 (2025)
 - ✅ Fixed buffer reference errors in WebAssembly memory allocation
 - ✅ Added Node.js 16+ compatibility
 - ✅ Enhanced build scripts with automatic fixes
@@ -810,6 +741,9 @@ For historical context about the original implementation, refer to the [archived
 - ✅ Improved error handling and debugging
 - ✅ All tests now pass consistently
 - ✅ Modern TypeScript compilation support
+- ✅ Production-ready build system
+- ✅ Comprehensive test suite
+- ✅ Enhanced package.json with proper metadata
 
 ### Original Version (2022 and earlier)
 - Initial Rust implementation of VDF algorithms
