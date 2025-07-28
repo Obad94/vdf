@@ -34,13 +34,17 @@ if ! rustup target list --installed | grep -q "wasm32-unknown-emscripten"; then
 fi
 
 echo "Setting up Emscripten environment..."
-if [ ! -f ~/tools/emsdk/emsdk_env.sh ]; then
-    echo "Error: Emscripten SDK not found at ~/tools/emsdk/" >&2
+
+# Prefer local emsdk directory if available, otherwise fallback to ~/tools/emsdk
+if [ -f ./emsdk/emsdk_env.sh ]; then
+    source ./emsdk/emsdk_env.sh
+elif [ -f ~/tools/emsdk/emsdk_env.sh ]; then
+    source ~/tools/emsdk/emsdk_env.sh
+else
+    echo "Error: Emscripten SDK not found in ./emsdk/ or ~/tools/emsdk/" >&2
     echo "Please install Emscripten SDK as documented in README.md" >&2
     exit 1
 fi
-
-source ~/tools/emsdk/emsdk_env.sh
 
 # Verify emcc is available
 if ! command_exists emcc; then

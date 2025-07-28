@@ -142,26 +142,29 @@ cargo --version
 ### 4. Install Emscripten SDK
 
 ```bash
-# Create a directory for emscripten (optional but recommended)
+# You can install Emscripten SDK either in your home directory or directly in the project directory.
+# The build system will automatically detect and use ./emsdk (project-local) or ~/tools/emsdk (global).
+
+# Option 1: Project-local (recommended for portability)
+cd /path/to/your/vdf/project
+git clone https://github.com/emscripten-core/emsdk.git
+cd emsdk
+./emsdk install latest
+./emsdk activate latest
+source ./emsdk_env.sh
+
+# Option 2: Global (in your home directory)
 cd ~
 mkdir -p ~/tools
 cd ~/tools
-
-# Clone Emscripten SDK
 git clone https://github.com/emscripten-core/emsdk.git
 cd emsdk
-
-# Install and activate latest version
 ./emsdk install latest
 ./emsdk activate latest
-
-# Set up environment variables
 source ./emsdk_env.sh
 
-# Add to your shell profile for persistence
+# (Optional) Add to your shell profile for persistence (if using global install)
 echo "source ~/tools/emsdk/emsdk_env.sh" >> ~/.bashrc
-
-# Reload shell configuration
 source ~/.bashrc
 
 # Verify installation
@@ -207,7 +210,12 @@ npm run build
 ./build.sh
 
 # Method 3: Manual step-by-step build
-source ~/tools/emsdk/emsdk_env.sh
+# Activate Emscripten environment (project-local or global)
+if [ -f ./emsdk/emsdk_env.sh ]; then
+  source ./emsdk/emsdk_env.sh
+else
+  source ~/tools/emsdk/emsdk_env.sh
+fi
 cargo clean
 cargo build --target wasm32-unknown-emscripten
 sed -i 's/new as(buffer,pointer,size\/as\.BYTES_PER_ELEMENT)/new as(HEAPU8.buffer,pointer,size\/as.BYTES_PER_ELEMENT)/g' src/vdf.js
@@ -223,8 +231,12 @@ cp src/vdf.* dist/
 #### 1. WebAssembly Build
 
 ```bash
-# Ensure Emscripten environment is loaded
-source ~/tools/emsdk/emsdk_env.sh
+# Ensure Emscripten environment is loaded (project-local or global)
+if [ -f ./emsdk/emsdk_env.sh ]; then
+  source ./emsdk/emsdk_env.sh
+else
+  source ~/tools/emsdk/emsdk_env.sh
+fi
 
 # Clean previous builds
 cargo clean
