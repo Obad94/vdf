@@ -6,3 +6,14 @@ edition = "2021"
 
 [dependencies]
 vdf = "0.1"
+
+# Memory optimization for WebAssembly
+[profile.release]
+opt-level = "s"        # Optimize for size
+lto = true            # Link-time optimization
+codegen-units = 1     # Better optimization
+panic = "abort"       # Smaller binary size
+
+[profile.dev]
+opt-level = 1         # Some optimization even in dev
+overflow-checks = true # Safety checks
