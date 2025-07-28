@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MonosProof™ VDF Demo - Working Version</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .demo-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .status {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status.success { background: rgba(76, 175, 80, 0.2); color: #4CAF50; }
+        .status.error { background: rgba(244, 67, 54, 0.2); color: #f44336; }
+        .status.info { background: rgba(33, 150, 243, 0.2); color: #2196F3; }
+        .status.warning { background: rgba(255, 152, 0, 0.2); color: #ff9800; }
+
+        .btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .btn-warning { background: linear-gradient(135deg, #ff9800, #f57c00); }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .control-group {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .control-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .control-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.5rem;
+            color: #ffffff;
+        }
+
+        .log {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 1rem;
+        }
+
+        .log-entry {
+            margin: 0.25rem 0;
+            color: #ffffff;
+        }
+
+        .log-success { color: #4CAF50; }
+        .log-warning { color: #ff9800; }
+        .log-error { color: #ff5722; }
+        .log-info { color: #2196F3; }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #4CAF50;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ MonosProof™ VDF Demo</h1>
+            <p>Real Verifiable Delay Function preventing bot attacks through cryptographic proof-of-work</p>
+        </div>
+
+        <div class="demo-section">
+            <div id="status" class="status info">Initializing VDF library...</div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <div class="control-label">Iterations</div>
+                    <input type="number" id="iterations" class="control-input" value="100" min="10" max="10000">
+                </div>
+                <div class="control-group">
+                    <div class="control-label">Key Size (bits)</div>
+                    <select id="keySize" class="control-input">
+                        <option value="1024">1024 bits</option>
+                        <option value="2048" selected>2048 bits</option>
+                        <option value="3072">3072 bits</option>
+                        <option value="4096">4096 bits</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">Algorithm</div>
+                    <select id="algorithm" class="control-input">
+                        <option value="false" selected>Wesolowski VDF</option>
+                        <option value="true">Pietrzak VDF</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">Challenge</div>
+                    <input type="text" id="challenge" class="control-input" value="MonosProof Demo">
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="timeElapsed">0.0s</div>
+                    <div class="stat-label">Time Elapsed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalProofs">0</div>
+                    <div class="stat-label">Total Proofs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgTime">--</div>
+                    <div class="stat-label">Average Time</div>
+                </div>
+            </div>
+
+            <div>
+                <button class="btn btn-primary" onclick="generateProof()" id="generateBtn" disabled>
+                    🔒 Generate VDF Proof
+                </button>
+                <button class="btn btn-warning" onclick="verifyProof()" id="verifyBtn" disabled>
+                    ✅ Verify Proof
+                </button>
+                <button class="btn" onclick="clearLog()">🗑️ Clear Log</button>
+            </div>
+
+            <div class="log" id="log"></div>
+        </div>
+    </div>
+
+    <!-- Load VDF library files in correct order -->
+    <script src="dist/vdf.js"></script>
+    <script src="dist/index.js"></script>
+
+    <script>
+        // Global variables
+        let vdfInstance = null;
+        let lastProof = null;
+        let lastParams = null;
+        let totalProofs = 0;
+        let totalTime = 0;
+        let currentComputation = null;
+
+        // Initialize VDF library
+        async function initializeVDF() {
+            try {
+                log('🔄 Initializing VDF library...', 'info');
+                
+                // Wait for modules to be available
+                let attempts = 0;
+                while (typeof module === 'undefined' && attempts < 50) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    attempts++;
+                }
+
+                // Get the VDF constructor function from the loaded module
+                // Based on your index.js structure, it exports a default function
+                let vdfConstructor;
+                
+                if (typeof module !== 'undefined' && module.exports && module.exports.default) {
+                    vdfConstructor = module.exports.default;
+                } else if (typeof exports !== 'undefined' && exports.default) {
+                    vdfConstructor = exports.default;
+                } else {
+                    throw new Error('VDF module not found in expected exports');
+                }
+
+                // Create VDF instance
+                vdfInstance = await vdfConstructor();
+                
+                log('✅ VDF library initialized successfully!', 'success');
+                updateStatus('Ready - VDF library loaded and initialized', 'success');
+                
+                // Enable buttons
+                document.getElementById('generateBtn').disabled = false;
+                
+                return true;
+            } catch (error) {
+                log(`❌ VDF initialization failed: ${error.message}`, 'error');
+                updateStatus('Failed to initialize VDF library', 'error');
+                return false;
+            }
+        }
+
+        // Generate VDF proof
+        async function generateProof() {
+            if (!vdfInstance) {
+                log('❌ VDF not initialized', 'error');
+                return;
+            }
+
+            try {
+                const iterations = parseInt(document.getElementById('iterations').value);
+                const keySize = parseInt(document.getElementById('keySize').value);
+                const isPietrzak = document.getElementById('algorithm').value === 'true';
+                const challengeText = document.getElementById('challenge').value;
+
+                // Validation
+                if (isPietrzak && (iterations % 2 !== 0 || iterations < 66)) {
+                    log('❌ Pietrzak requires even iterations ≥ 66', 'error');
+                    return;
+                }
+
+                const challenge = new TextEncoder().encode(challengeText);
+                
+                log(`🚀 Starting VDF computation:`, 'info');
+                log(`   Algorithm: ${isPietrzak ? 'Pietrzak' : 'Wesolowski'}`, 'info');
+                log(`   Iterations: ${iterations}`, 'info');
+                log(`   Key Size: ${keySize} bits`, 'info');
+                log(`   Challenge: "${challengeText}"`, 'info');
+
+                // Disable buttons during computation
+                document.getElementById('generateBtn').disabled = true;
+                document.getElementById('verifyBtn').disabled = true;
+                updateStatus('Computing VDF proof...', 'warning');
+
+                // Start progress tracking
+                const startTime = Date.now();
+                const progressInterval = setInterval(() => {
+                    const elapsed = (Date.now() - startTime) / 1000;
+                    document.getElementById('timeElapsed').textContent = elapsed.toFixed(1) + 's';
+                    
+                    // Simulate progress
+                    const progress = Math.min((elapsed / (iterations / 50)) * 100, 95);
+                    document.getElementById('progressBar').style.width = progress + '%';
+                }, 100);
+
+                // Generate proof
+                const proof = vdfInstance.generate(iterations, challenge, keySize, isPietrzak);
+                
+                clearInterval(progressInterval);
+                const duration = (Date.now() - startTime) / 1000;
+                
+                // Update statistics
+                totalProofs++;
+                totalTime += duration;
+                document.getElementById('totalProofs').textContent = totalProofs;
+                document.getElementById('avgTime').textContent = (totalTime / totalProofs).toFixed(1) + 's';
+                document.getElementById('progressBar').style.width = '100%';
+
+                // Store for verification
+                lastProof = proof;
+                lastParams = { iterations, challenge, keySize, isPietrzak };
+
+                log(`✅ VDF proof generated successfully!`, 'success');
+                log(`   Duration: ${duration.toFixed(2)} seconds`, 'success');
+                log(`   Proof size: ${proof.length} bytes`, 'success');
+                log(`   Throughput: ${(iterations / duration).toFixed(0)} iterations/second`, 'info');
+
+                updateStatus(`Proof generated in ${duration.toFixed(2)}s - Ready to verify`, 'success');
+                
+                // Re-enable buttons
+                document.getElementById('generateBtn').disabled = false;
+                document.getElementById('verifyBtn').disabled = false;
+
+            } catch (error) {
+                log(`❌ VDF generation failed: ${error.message}`, 'error');
+                updateStatus('VDF generation failed', 'error');
+                
+                // Re-enable buttons
+                document.getElementById('generateBtn').disabled = false;
+                document.getElementById('verifyBtn').disabled = true;
+            }
+        }
+
+        // Verify VDF proof
+        async function verifyProof() {
+            if (!vdfInstance || !lastProof || !lastParams) {
+                log('❌ No proof to verify', 'error');
+                return;
+            }
+
+            try {
+                log('🔍 Verifying VDF proof...', 'info');
+                updateStatus('Verifying proof...', 'warning');
+
+                const startTime = Date.now();
+                const isValid = vdfInstance.verify(
+                    lastParams.iterations,
+                    lastParams.challenge,
+                    lastProof,
+                    lastParams.keySize,
+                    lastParams.isPietrzak
+                );
+                const verificationTime = (Date.now() - startTime) / 1000;
+
+                if (isValid) {
+                    log(`✅ Proof verification SUCCESSFUL!`, 'success');
+                    log(`   Verification time: ${verificationTime.toFixed(3)} seconds`, 'success');
+                    updateStatus(`Proof verified successfully in ${verificationTime.toFixed(3)}s`, 'success');
+                } else {
+                    log(`❌ Proof verification FAILED!`, 'error');
+                    updateStatus('Proof verification failed', 'error');
+                }
+
+            } catch (error) {
+                log(`❌ Verification error: ${error.message}`, 'error');
+                updateStatus('Verification error', 'error');
+            }
+        }
+
+        // Utility functions
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+
+            // Keep only last 50 entries
+            while (logDiv.children.length > 50) {
+                logDiv.removeChild(logDiv.firstChild);
+            }
+            
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function updateStatus(message, type = 'info') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+            log('📝 Log cleared', 'info');
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', async () => {
+            log('🌟 MonosProof VDF Demo started', 'info');
+            
+            // Wait a bit for scripts to load
+            setTimeout(async () => {
+                const success = await initializeVDF();
+                if (success) {
+                    log('🎯 Ready for VDF demonstrations!', 'success');
+                } else {
+                    log('💥 Demo ready but VDF initialization failed', 'warning');
+                }
+            }, 1000);
+        });
+
+        // Update expected time when parameters change
+        function updateExpectedTime() {
+            const iterations = parseInt(document.getElementById('iterations').value) || 100;
+            const expectedSeconds = iterations / 50; // Rough estimate
+            // You can update UI here if needed
+        }
+
+        document.getElementById('iterations').addEventListener('input', updateExpectedTime);
+        updateExpectedTime();
+    </script>
+</body>
+</html>
