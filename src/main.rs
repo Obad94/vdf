@@ -1,6 +1,6 @@
 // TODO: Next line will hopefully replace `.cargo/config` in future
 //#[link_args = "-L .cache/lib --closure 0 -Oz --llvm-lto 3 -s EXPORTED_RUNTIME_METHODS=[] -s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=[] -s EXPORTED_FUNCTIONS=['_malloc','_free','_generate','_verify'] -s MODULARIZE=1 -s WASM=1 --post-js src/bytes_allocation.js"]
-
+// src/main.rs
 extern crate vdf;
 
 use vdf::{PietrzakVDFParams, VDFParams, WesolowskiVDFParams, VDF, InvalidIterations};

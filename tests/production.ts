@@ -1,3 +1,4 @@
+// tests/production.ts
 import * as test from 'tape';
 import vdf from '../src/index';
 
@@ -95,11 +96,11 @@ test('Production readiness tests', async (t) => {
     // Test 5: Concurrent operations
     t.test('Concurrent operations', async (st) => {
         st.plan(1);
-        
-        const promises = [];
+
+        const promises: Promise<boolean>[] = [];
         for (let i = 0; i < 10; i++) {
             promises.push(
-                new Promise(async (resolve) => {
+                new Promise<boolean>(async (resolve) => {
                     try {
                         const proof = vdfInstance.generate(50 + i, new Uint8Array([i]), 1024, false);
                         const isValid = vdfInstance.verify(50 + i, new Uint8Array([i]), proof, 1024, false);
@@ -110,7 +111,7 @@ test('Production readiness tests', async (t) => {
                 })
             );
         }
-        
+
         const results = await Promise.all(promises);
         const allPassed = results.every(result => result === true);
         st.ok(allPassed, 'All concurrent operations completed successfully');

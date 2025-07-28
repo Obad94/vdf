@@ -1,5 +1,6 @@
 --- config.h.original	2013-02-25 13:11:03.628000004 +0000
 +++ config.h	2013-02-25 13:11:23.260000004 +0000
+# src/gmp/config.h.patch
 # Based on https://github.com/marcosscriven/cgaljs/blob/master/components/gmp/patches/config.h.patch
 @@ -213,10 +213,10 @@
  #define HAVE_LOCALE_H 1

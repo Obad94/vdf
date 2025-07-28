@@ -1,3 +1,4 @@
+// tests/basic.ts
 import * as test from 'tape';
 import vdf from '../src/index';
 

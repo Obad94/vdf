@@ -1,4 +1,5 @@
 // @ts-ignore
+// src/index.ts
 import vdf = require('./vdf');
 
 /**
@@ -34,6 +35,13 @@ async function CreateLib(lib: EmscriptenModule, options?: object): Promise<ILibr
     ): Uint8Array {
         if (isPietrzak && (iterations % 2 !== 0 || iterations < 66)) {
             throw new Error('Number of iterations must be even and at least 66');
+        }
+        if (!challenge || challenge.length === 0) {
+            throw new Error('Challenge must not be empty');
+        }
+        const validSizes = [1024, 2048, 3072, 4096];
+        if (!validSizes.includes(intSizeBits)) {
+            throw new Error('intSizeBits must be one of 1024, 2048, 3072, 4096');
         }
 
         const challengePtr = libInstance.allocateBytes(challenge.length, challenge);

@@ -1,4 +1,5 @@
 #!/bin/bash
+# build.sh
 set -euo pipefail
 
 # Function to check if command exists
