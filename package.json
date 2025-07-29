@@ -1,6 +1,6 @@
 {
   "name": "@subspace/vdf",
-  "description": "High-performance WebAssembly implementation of Verifiable Delay Functions (VDF) supporting Pietrzak and Wesolowski algorithms",
+  "description": "High-performance WebAssembly implementation of Verifiable Delay Functions (VDF) supporting Pietrzak and Wesolowski algorithms with optimized verification",
   "keywords": [
     "crypto",
     "cryptography",
@@ -12,13 +12,15 @@
     "pietrzak",
     "wesolowski",
     "proof-of-time",
-    "blockchain"
+    "blockchain",
+    "optimized-verification",
+    "fast-verification"
   ],
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/Obad94/vdf",
   "author": "Nazar Mokrynskyi <nazar@mokrynskyi.com>",
   "contributors": [
-    "Obad94 <obad94@github> (Current Fork Maintainer 2025)"
+    "Obad94 <obad94@github> (Current Fork Maintainer 2025 - Added Fast Verification)"
   ],
   "repository": {
     "type": "git",
@@ -44,13 +46,13 @@
     "test": "npm run build && npm run test-only",
     "test-only": "ts-node node_modules/.bin/tape tests/**/*.ts",
     "test:coverage": "nyc npm run test-only",
+    "test:performance": "npm run build && node dist/performance-test.js",
+    "test:verification": "npm run build && node -e \"require('./tests/verification-test.js')\"",
     "prepublishOnly": "npm run clean && npm run build:prod && npm test",
-    "verify": "node -e \"const vdf = require('./dist/index.js'); vdf().then(() => console.log('✅ VDF library verified'));\""
-  },
-  "dependencies": {
-    "@types/node": "^16.18.0"
+    "verify": "node -e \"const vdf = require('./dist/index.js'); vdf().then(lib => { console.log('✅ VDF library verified'); console.log('⚡ Fast verification enabled:', typeof lib.verify === 'function'); });\""
   },
   "devDependencies": {
+    "@types/node": "^24.1.0",
     "@types/tape": "^4.2.33",
     "nyc": "^15.1.0",
     "tape": "^5.0.0",
