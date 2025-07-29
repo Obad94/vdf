@@ -30,29 +30,59 @@ fn create_discriminant(_seed: &[u8], _length: u16) -> <GmpClassGroup as ClassGro
 }
 
 
-// Hash prime function for Wesolowski verification - simplified approach
+// --- Wesolowski fast verification helpers ---
+use sha2::Sha256;
+use sha2::digest::Digest;
 
-// Simplified Wesolowski verification that focuses on the core optimization
+fn hash_to_prime(data: &[u8]) -> u64 {
+    // Hash the data and search for a prime >= 2^16
+    let mut counter = 0u64;
+    loop {
+        let mut hasher = Sha256::new();
+        hasher.update(data);
+        hasher.update(&counter.to_le_bytes());
+        let hash = hasher.finalize();
+        // Use lower 8 bytes as candidate
+        let mut candidate = u64::from_le_bytes([
+            hash[0], hash[1], hash[2], hash[3],
+            hash[4], hash[5], hash[6], hash[7],
+        ]);
+        // Ensure candidate is odd and >= 2^16
+        candidate |= 1;
+        if candidate >= (1 << 16) && primal::is_prime(candidate) {
+            return candidate;
+        }
+        counter += 1;
+    }
+}
+
 fn verify_wesolowski_fast<T: BigNum, V: ClassGroup<BigNum = T>>(
     mut x: V,
     y: &V,
     mut proof: V,
     t: u64,
+    challenge: &[u8],
+    proof_bytes: &[u8],
 ) -> Result<(), ()> {
-    // Use a simple prime for demonstration - this is the key optimization point
-    let b = T::from(65537); // Simple prime instead of complex hash_prime
-    
-    // Compute r = 2^t mod b (this is the fast part!)
-    let two = T::from(2);
+    // Hash to prime l using challenge and proof
+    let mut hash_input = Vec::new();
+    hash_input.extend_from_slice(challenge);
+    hash_input.extend_from_slice(proof_bytes);
+    let l = hash_to_prime(&hash_input);
+
+    // Compute r = 2^t mod l using mod_powm
+    let mut r = T::from(1u64);
+    let two = T::from(2u64);
     let t_bignum = T::from(t);
-    let mut r = T::from(1);
-    r.mod_powm(&two, &t_bignum, &b);
-    
-    // Verify: proof^b * x^r == y (core Wesolowski verification)
-    proof.pow(b);
+    let l_bignum = T::from(l);
+    r.mod_powm(&two, &t_bignum, &l_bignum);
+
+    // proof^l * x^r == y
+    let l_bignum2 = T::from(l); // For clarity
+    proof.pow(l_bignum2);
     x.pow(r);
     proof *= &x;
-    
+
     if &proof == y {
         Ok(())
     } else {
@@ -92,12 +122,12 @@ pub extern "C" fn verify_impl_fast(
                 Err(_) => false
             }
         } else {
-            // Use optimized Wesolowski verification
+            // Use only internal Wesolowski verification (no external vdf crate)
             let discriminant = create_discriminant(challenge, int_size_bits);
             let two = <GmpClassGroup as ClassGroup>::BigNum::from(2);
             let one = <GmpClassGroup as ClassGroup>::BigNum::from(1);
             let x = GmpClassGroup::from_ab_discriminant(two, one, discriminant.clone());
-            
+
             if (usize::MAX - 16) < int_size_bits.into() {
                 return false;
             }
@@ -105,12 +135,13 @@ pub extern "C" fn verify_impl_fast(
             if int_size * 4 != proof_blob.len() {
                 return false;
             }
-            
+
             let (result_bytes, proof_bytes) = proof_blob.split_at(2 * int_size);
             let proof_element = GmpClassGroup::from_bytes(proof_bytes, discriminant.clone());
             let y = GmpClassGroup::from_bytes(result_bytes, discriminant);
 
-            match verify_wesolowski_fast(x, &y, proof_element, iterations) {
+            // Only use internal fast verification
+            match verify_wesolowski_fast(x, &y, proof_element, iterations, challenge, proof_bytes) {
                 Ok(()) => true,
                 Err(_) => false
             }

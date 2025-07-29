@@ -38,8 +38,8 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "build": "./build.sh",
-    "build:prod": "NODE_ENV=production ./build.sh",
+    "build": "./build.sh && node scripts/patch-vdf-export.js",
+    "build:prod": "NODE_ENV=production ./build.sh && node scripts/patch-vdf-export.js",
     "clean": "rm -rf dist target",
     "lint": "tslint --project .",
     "lint:fix": "tslint --project . --fix",

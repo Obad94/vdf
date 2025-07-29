@@ -7,8 +7,10 @@ edition = "2021"
 [dependencies]
 vdf = "0.1"
 classgroup = "0.1"
-sha2 = "0.8"
+sha2 = "0.10"
 num-traits = "0.2"
+
+primal = "0.3"
 
 # Memory optimization for WebAssembly
 [profile.release]
