@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecureTickets Pro - Taylor Swift | The Eras Tour - VDF Protected</title>
+    <title>SecureTickets Pro - Real Autonomys VDF</title>
     <style>
         * {
             margin: 0;
@@ -90,17 +90,6 @@
             overflow: hidden;
         }
 
-        .event-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.03)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
-        }
-
         .event-info {
             position: relative;
             z-index: 2;
@@ -138,20 +127,6 @@
             font-weight: 600;
         }
 
-        .warning {
-            background: rgba(255, 193, 7, 0.1);
-            border: 2px solid #ffc107;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .warning h3 {
-            color: #ffc107;
-            margin-bottom: 1rem;
-        }
-
         .vdf-info {
             background: rgba(138, 43, 226, 0.1);
             border: 2px solid #8A2BE2;
@@ -166,129 +141,14 @@
             margin-bottom: 1rem;
         }
 
-        .defense-layers {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 20px;
-            padding: 2rem;
-            margin: 2rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .layers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .layer-card {
-            border-radius: 15px;
-            padding: 1.5rem;
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .layer-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-
-        .layer-universal {
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
-            border-color: #4CAF50;
-        }
-
-        .layer-economic {
-            background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 152, 0, 0.05));
-            border-color: #ff9800;
-        }
-
-        .layer-scaling {
-            background: linear-gradient(135deg, rgba(233, 30, 99, 0.1), rgba(233, 30, 99, 0.05));
-            border-color: #e91e63;
-        }
-
-        .layer-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .layer-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .layer-universal .layer-icon {
-            background: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-        }
-
-        .layer-economic .layer-icon {
-            background: rgba(255, 152, 0, 0.2);
-            color: #ff9800;
-        }
-
-        .layer-scaling .layer-icon {
-            background: rgba(233, 30, 99, 0.2);
-            color: #e91e63;
-        }
-
-        .layer-header h3 {
-            color: #ffffff;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .layer-subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 600;
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-        }
-
-        .layer-points {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .layer-points li {
-            color: rgba(255, 255, 255, 0.8);
+        .vdf-params {
+            background: rgba(138, 43, 226, 0.1);
+            border: 1px solid #8A2BE2;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
             font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 0.5rem;
-            padding-left: 1rem;
-            position: relative;
-        }
-
-        .layer-points li:before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-        }
-
-        .layer-universal .layer-points li:before {
-            color: #4CAF50;
-        }
-
-        .layer-economic .layer-points li:before {
-            color: #ff9800;
-        }
-
-        .layer-scaling .layer-points li:before {
-            color: #e91e63;
         }
 
         .stats-grid {
@@ -310,7 +170,7 @@
             font-size: 0.9rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: #4CAF50;
+            color: #8A2BE2;
         }
 
         .stat-value {
@@ -323,48 +183,6 @@
         .stat-label {
             color: rgba(255, 255, 255, 0.6);
             font-size: 0.8rem;
-        }
-
-        .difficulty-indicator {
-            background: rgba(255, 152, 0, 0.1);
-            border: 2px solid #ff9800;
-            padding: 2rem;
-            border-radius: 15px;
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        .difficulty-text {
-            color: #ff9800;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .difficulty-level {
-            font-size: 3rem;
-            font-weight: 900;
-            color: #ff9800;
-            margin: 0.5rem 0;
-        }
-
-        .cpu-warning {
-            background: rgba(255, 87, 51, 0.15);
-            border: 2px solid #ff5733;
-            border-radius: 10px;
-            padding: 1rem;
-            margin: 1rem 0;
-            text-align: center;
-            display: none;
-            animation: pulse 1.5s infinite;
-        }
-
-        .cpu-warning.show {
-            display: block;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
         }
 
         .ticket-selection {
@@ -534,39 +352,6 @@
             border-radius: 20px;
         }
 
-        .progress-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .progress-item {
-            margin: 1rem 0;
-        }
-
-        .progress-label {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-
-        .progress-bar-full {
-            width: 100%;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #8A2BE2, #9932CC);
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 10px;
-        }
-
         .action-buttons {
             display: flex;
             gap: 1rem;
@@ -597,31 +382,6 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
-        }
-
-        .btn-bot-single {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-        }
-
-        .btn-bot-small {
-            background: linear-gradient(135deg, #2196F3, #1976D2);
-            color: white;
-        }
-
-        .btn-bot-large {
-            background: linear-gradient(135deg, #e91e63, #c2185b);
-            color: white;
-        }
-
-        .btn-stop {
-            background: linear-gradient(135deg, #f44336, #d32f2f);
-            color: white;
-        }
-
-        .btn-bot-single:hover, .btn-bot-small:hover, .btn-bot-large:hover, .btn-stop:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
 
         .btn:disabled {
@@ -668,33 +428,10 @@
         }
 
         .log-success { color: #4CAF50; }
-        .log-working { color: #ff9800; }
-        .log-info { color: #2196F3; }
-        .log-warning { color: #ff9800; }
         .log-error { color: #ff5733; }
+        .log-warning { color: #ff9800; }
+        .log-info { color: #2196F3; }
         .log-vdf { color: #8A2BE2; }
-
-        .toast {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: rgba(138, 43, 226, 0.95);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            z-index: 1001;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.error {
-            background: rgba(255, 87, 51, 0.95);
-        }
 
         .spinner {
             width: 20px;
@@ -712,14 +449,33 @@
             100% { transform: rotate(360deg); }
         }
 
-        .vdf-params {
-            background: rgba(138, 43, 226, 0.1);
-            border: 1px solid #8A2BE2;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
+        .setup-required {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .setup-required h3 {
+            color: #ffc107;
+            margin-bottom: 1rem;
+        }
+
+        .setup-required code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
             font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
+        }
+
+        .setup-required pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow-x: auto;
         }
 
         @media (max-width: 768px) {
@@ -746,14 +502,6 @@
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-
-            .layers-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .layer-card {
-                margin-bottom: 1rem;
-            }
         }
     </style>
 </head>
@@ -764,10 +512,10 @@
             <div style="display: flex; align-items: center;">
                 <div class="security-badge">
                     <div class="shield"></div>
-                    <span>VDF Protection Active</span>
+                    <span>Real VDF</span>
                 </div>
                 <div class="vdf-status" id="vdfStatus">
-                    Initializing VDF...
+                    Loading...
                 </div>
             </div>
         </div>
@@ -791,109 +539,58 @@
                         <div class="detail-value">MetLife Stadium</div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">🎫 Total Purchases</div>
-                        <div class="detail-value" id="ticketsRemaining">0</div>
+                        <div class="detail-label">🎫 VDF Purchases</div>
+                        <div class="detail-value" id="totalPurchases">0</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="vdf-info">
-            <h3>🛡️ VDF Protection Active</h3>
-            <p>This system uses <strong>Wesolowski Verifiable Delay Functions</strong> with cryptographic sequential computation that cannot be parallelized or bypassed.</p>
+            <h3>🛡️ Real Autonomys VDF Protection</h3>
+            <p>Using your compiled Autonomys VDF WebAssembly module with <strong>real cryptographic verification</strong>.</p>
             <div class="vdf-params">
-                Algorithm: Wesolowski VDF • Key Size: 1024 bits • Base Iterations: 20,000 • Progressive Scaling: Active
+                Source: /autonomys/vdf • Algorithm: Wesolowski • Iterations: 20,000 • Key: 1024-bit
             </div>
         </div>
 
-        <div class="warning">
-            <h3>📊 Real VDF Computation - Monitor CPU Usage!</h3>
-            <p>Each purchase requires sequential mathematical computation that takes 3-5 seconds and cannot be accelerated. Watch your CPU usage spike during VDF generation.</p>
-        </div>
+        <div class="setup-required" id="setupInstructions" style="display: none;">
+            <h3>🔧 VDF Module Required</h3>
+            <p>To use real VDF, copy your built VDF files to the demo directory:</p>
+            <pre><code># From your autonomys VDF project root:
+cp dist/vdf.js ./
+cp dist/vdf.wasm ./
 
-        <div class="defense-layers">
-            <h2 style="text-align: center; margin-bottom: 2rem; color: #ffffff; font-size: 1.8rem;">🛡️ True VDF Defense System</h2>
-            <div class="layers-grid">
-                <div class="layer-card layer-universal">
-                    <div class="layer-header">
-                        <div class="layer-icon">🔐</div>
-                        <h3>Layer 1: Cryptographic VDF</h3>
-                    </div>
-                    <p class="layer-subtitle">Mathematical proof of sequential work:</p>
-                    <ul class="layer-points">
-                        <li>Wesolowski VDF with 1024-bit RSA modulus</li>
-                        <li>Sequential squaring - cannot be parallelized</li>
-                        <li>Cryptographically verifiable proofs</li>
-                        <li>No hardware can bypass the time delay</li>
-                    </ul>
-                </div>
-
-                <div class="layer-card layer-economic">
-                    <div class="layer-header">
-                        <div class="layer-icon">💰</div>
-                        <h3>Layer 2: Progressive Difficulty</h3>
-                    </div>
-                    <p class="layer-subtitle">Exponential cost scaling with demand:</p>
-                    <ul class="layer-points">
-                        <li>Base: 20,000 iterations (~3 seconds)</li>
-                        <li>Each purchase increases difficulty globally</li>
-                        <li>User-specific scaling for bulk attempts</li>
-                        <li>Economic impossibility for mass scalping</li>
-                    </ul>
-                </div>
-
-                <div class="layer-card layer-scaling">
-                    <div class="layer-header">
-                        <div class="layer-icon">📈</div>
-                        <h3>Layer 3: Real-Time Adaptation</h3>
-                    </div>
-                    <p class="layer-subtitle">Dynamic response to attack patterns:</p>
-                    <ul class="layer-points">
-                        <li>Geographic risk assessment integration</li>
-                        <li>Bot detection through behavior analysis</li>
-                        <li>Instant verification for legitimate proofs</li>
-                        <li>Server-side proof validation ensures security</li>
-                    </ul>
-                </div>
-            </div>
+# OR if you have different output:
+cp src/vdf.js ./
+cp src/vdf.wasm ./</code></pre>
+            <p>The demo expects <code>vdf.js</code> and <code>vdf.wasm</code> in the same directory.</p>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-title">📋 Total Purchases</div>
-                <div class="stat-value" id="totalPurchases">0</div>
-                <div class="stat-label">VDF proofs generated</div>
+                <div class="stat-title">📋 VDF Proofs</div>
+                <div class="stat-value" id="vdfProofs">0</div>
+                <div class="stat-label">Generated</div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-title">⚡ VDF Iterations</div>
+                <div class="stat-title">⚡ Iterations</div>
                 <div class="stat-value" id="totalIterations">0</div>
-                <div class="stat-label">Sequential computations</div>
+                <div class="stat-label">Computed</div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-title">⏱️ Total VDF Time</div>
+                <div class="stat-title">⏱️ VDF Time</div>
                 <div class="stat-value" id="totalTime">0s</div>
-                <div class="stat-label">Computation time used</div>
+                <div class="stat-label">Computation</div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-title">💰 Est. Energy Cost</div>
-                <div class="stat-value" id="energyCost">$0.000</div>
-                <div class="stat-label">Based on sequential work</div>
+                <div class="stat-title">✅ Success Rate</div>
+                <div class="stat-value" id="successRate">100%</div>
+                <div class="stat-label">Verifications</div>
             </div>
-        </div>
-
-        <div class="difficulty-indicator">
-            <div class="difficulty-text">🛡️ Current VDF Difficulty</div>
-            <div class="difficulty-level" id="currentIterations">20,000</div>
-            <div style="color: rgba(255,255,255,0.8);">
-                Next purchase requires <span id="expectedTime">~3 seconds</span> of sequential computation
-            </div>
-        </div>
-
-        <div class="cpu-warning" id="cpuWarning">
-            ⚠️ HIGH CPU USAGE DETECTED! Your computer is performing sequential VDF computations.
         </div>
 
         <div class="ticket-selection">
@@ -929,7 +626,7 @@
                 <button class="quantity-btn" onclick="changeQuantity(-1)">−</button>
                 <span class="quantity-display" id="quantity">1</span>
                 <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
-                <span style="color: rgba(255,255,255,0.6); margin-left: 1rem;">(Each ticket requires separate VDF proof)</span>
+                <span style="color: rgba(255,255,255,0.6); margin-left: 1rem;">(Each needs real VDF proof)</span>
             </div>
         </div>
 
@@ -940,8 +637,8 @@
 
         <div class="security-challenge" id="securityChallenge">
             <div class="challenge-icon">🛡️</div>
-            <h3 class="challenge-title">VDF Security Verification</h3>
-            <p class="challenge-description">Generating cryptographic proof using Wesolowski VDF. This sequential computation cannot be bypassed or parallelized by any hardware.</p>
+            <h3 class="challenge-title">Real VDF Verification</h3>
+            <p class="challenge-description">Generating cryptographic proof using your Autonomys VDF WebAssembly module. Real sequential computation.</p>
             
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar"></div>
@@ -954,54 +651,26 @@
                     <div class="stat-label">Elapsed</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Iterations</div>
-                    <div class="stat-value" id="currentIteration">0</div>
-                    <div class="stat-label">Completed</div>
-                </div>
-                <div class="stat-card">
                     <div class="stat-title">Progress</div>
                     <div class="stat-value" id="progressPercent">0%</div>
                     <div class="stat-label">Complete</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">VDF Level</div>
-                    <div class="stat-value" id="difficulty">20000</div>
-                    <div class="stat-label">Iterations</div>
+                    <div class="stat-title">Rate</div>
+                    <div class="stat-value" id="currentRate">--</div>
+                    <div class="stat-label">iter/sec</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Algorithm</div>
+                    <div class="stat-value">W-VDF</div>
+                    <div class="stat-label">Wesolowski</div>
                 </div>
             </div>
 
             <div class="action-buttons">
-                <button class="btn btn-primary" onclick="startVDFVerification()" id="verifyBtn">
-                    🔒 Purchase Tickets (VDF Protected)
+                <button class="btn btn-primary" onclick="startRealVDFPurchase()" id="purchaseBtn" disabled>
+                    🔒 Purchase Tickets (Real VDF)
                 </button>
-            </div>
-
-            <div class="action-buttons" style="margin-top: 1rem;">
-                <button class="btn btn-bot-single" onclick="simulateSingleBotVDF()">
-                    🤖 Single Bot Test (VDF)
-                </button>
-                
-                <button class="btn btn-bot-small" onclick="simulateSmallBotFarmVDF()">
-                    🤖 Small Bot Farm (10 VDFs)
-                </button>
-                
-                <button class="btn btn-bot-large" onclick="simulateMassBotAttackVDF()">
-                    🔥 Mass Bot Attack (100 VDFs)
-                </button>
-                
-                <button class="btn btn-stop" onclick="stopAllVDFTests()" id="stopTestsBtn" disabled>
-                    🛑 Stop All Tests
-                </button>
-            </div>
-        </div>
-
-        <div class="progress-section">
-            <h3 style="margin-bottom: 1rem; color: #ffffff;">🔄 Current VDF Operations</h3>
-            <div class="progress-item">
-                <div class="progress-label">Active VDF Computations</div>
-                <div class="progress-bar-full">
-                    <div class="progress-fill" id="overallProgress"></div>
-                </div>
             </div>
         </div>
 
@@ -1012,327 +681,349 @@
             </div>
 
             <div class="log-card">
-                <div class="log-title">⚡ VDF Performance Metrics</div>
+                <div class="log-title">⚡ Performance Metrics</div>
                 <div class="log-content" id="performanceLog"></div>
             </div>
         </div>
     </main>
 
-    <div class="toast" id="toast"></div>
-
+    <!-- Load your actual VDF module -->
+    <script src="./vdf.js"></script>
     <script>
-        // MonosProof VDF Integration System
-        class MonosProofVDF {
+        // Real Autonomys VDF Integration - Based on your production tests
+        class RealAutonomysVDF {
             constructor() {
                 this.vdfInstance = null;
-                this.isInitialized = false;
-                this.baseIterations = 20000;
-                this.keySize = 1024;
-                this.totalPurchases = 0;
-                this.totalVDFTime = 0;
+                this.isReady = false;
+                this.iterations = 20000; // Fixed 20k iterations like your spec
+                this.keySize = 1024;     // 1024-bit keys
+                this.totalProofs = 0;
+                this.totalTime = 0;
                 this.totalIterations = 0;
-                this.activeVDFWorkers = [];
-                this.isVerifying = false;
-                this.isTestRunning = false;
-                this.testWorkers = [];
-                
-                // VDF-specific tracking
-                this.userPurchases = 0;
-                this.globalDifficultyMultiplier = 1.0;
+                this.successfulVerifications = 0;
+                this.isProcessing = false;
                 
                 this.init();
             }
 
             async init() {
                 try {
-                    logVDF('🌟 MonosProof VDF System starting...', 'vdf');
-                    this.updateVDFStatus('Initializing VDF library...');
+                    this.log('🔄 Loading real Autonomys VDF module...', 'info');
+                    this.updateStatus('Loading VDF...');
                     
-                    // Initialize VDF library (simulated for demo)
-                    await this.loadVDFLibrary();
+                    // Try to load your actual VDF module
+                    await this.loadVDFModule();
                     
-                    this.isInitialized = true;
-                    logVDF('✅ VDF system ready - Wesolowski algorithm loaded', 'success');
-                    this.updateVDFStatus('VDF Ready');
-                    document.getElementById('verifyBtn').disabled = false;
+                    this.isReady = true;
+                    this.log('✅ Real Autonomys VDF ready', 'success');
+                    this.updateStatus('VDF Ready');
+                    document.getElementById('purchaseBtn').disabled = false;
+                    
+                    // Run a quick validation test like your production tests
+                    await this.runInitialValidation();
                     
                 } catch (error) {
-                    logVDF(`❌ VDF initialization failed: ${error.message}`, 'error');
-                    this.updateVDFStatus('VDF Error');
+                    this.log(`❌ VDF loading failed: ${error.message}`, 'error');
+                    this.updateStatus('VDF Required');
+                    this.showSetupInstructions();
                 }
             }
 
-            async loadVDFLibrary() {
-                // Simulate loading actual VDF library
-                // In production: import { createVdf } from '@subspace/vdf';
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        this.vdfInstance = this.createVDFWrapper();
-                        resolve();
-                    }, 1500);
-                });
-            }
-
-            createVDFWrapper() {
-                // VDF wrapper implementing Wesolowski algorithm
-                return {
-                    generate: async (iterations, challenge, keySize) => {
-                        logVDF(`🔄 Starting Wesolowski VDF generation`, 'vdf');
-                        logVDF(`  Iterations: ${iterations.toLocaleString()}`, 'info');
-                        logVDF(`  Key Size: ${keySize} bits`, 'info');
-                        logVDF(`  Challenge: ${challenge.length} bytes`, 'info');
-                        
-                        // Sequential computation simulation - cannot be parallelized
-                        const baseTime = 3000; // 3 second base for 20k iterations
-                        const scaleFactor = iterations / this.baseIterations;
-                        const keyScaleFactor = keySize / 1024;
-                        const computeTime = baseTime * scaleFactor * keyScaleFactor;
-                        
-                        return new Promise((resolve, reject) => {
-                            const startTime = Date.now();
-                            let currentIteration = 0;
-                            
-                            const iterationStep = Math.max(1, Math.floor(iterations / 100));
-                            
-                            const computeStep = () => {
-                                const elapsed = Date.now() - startTime;
-                                const progress = elapsed / computeTime;
-                                currentIteration = Math.floor(progress * iterations);
-                                
-                                if (currentIteration > iterations) currentIteration = iterations;
-                                
-                                // Update progress display
-                                document.getElementById('currentIteration').textContent = currentIteration.toLocaleString();
-                                document.getElementById('progressPercent').textContent = Math.floor(progress * 100) + '%';
-                                document.getElementById('timeElapsed').textContent = (elapsed / 1000).toFixed(1) + 's';
-                                
-                                const progressBar = document.getElementById('progressBar');
-                                if (progressBar) {
-                                    progressBar.style.width = Math.min(progress * 100, 100) + '%';
-                                }
-                                
-                                if (elapsed >= computeTime) {
-                                    // Generate proof (simulated)
-                                    const proof = new Uint8Array(256);
-                                    crypto.getRandomValues(proof);
-                                    
-                                    logVDF(`✅ VDF proof generated successfully`, 'success');
-                                    logVDF(`  Total time: ${(elapsed / 1000).toFixed(2)} seconds`, 'success');
-                                    logVDF(`  Iterations completed: ${iterations.toLocaleString()}`, 'success');
-                                    
-                                    resolve({
-                                        proof: proof,
-                                        iterations: iterations,
-                                        time: elapsed / 1000
-                                    });
-                                } else {
-                                    // Continue sequential computation
-                                    setTimeout(computeStep, 50);
-                                }
-                            };
-                            
-                            computeStep();
-                        });
-                    },
-
-                    verify: async (iterations, challenge, proof, keySize) => {
-                        // Fast verification simulation
-                        logVDF('🔍 Verifying VDF proof...', 'vdf');
-                        
-                        return new Promise((resolve) => {
-                            setTimeout(() => {
-                                const isValid = true; // Simulated verification
-                                logVDF(`${isValid ? '✅' : '❌'} VDF proof verification ${isValid ? 'PASSED' : 'FAILED'}`, isValid ? 'success' : 'error');
-                                resolve(isValid);
-                            }, 100); // 100ms verification time
-                        });
+            async loadVDFModule() {
+                // Only support browser-compatible Emscripten output (vdf.js/Module)
+                try {
+                    if (typeof Module !== 'undefined' && typeof Module === 'function') {
+                        this.vdfInstance = await Module();
+                        this.log('✅ Loaded VDF from Module()', 'success');
+                        return;
+                    } else if (typeof Module !== 'undefined' && Module.ready) {
+                        await Module.ready;
+                        this.vdfInstance = Module;
+                        this.log('✅ Loaded VDF from Module.ready', 'success');
+                        return;
                     }
-                };
-            }
-
-            calculateCurrentDifficulty() {
-                // Progressive difficulty scaling
-                const globalMultiplier = 1 + (this.totalPurchases * 0.05);
-                const userMultiplier = Math.pow(1.2, this.userPurchases);
-                
-                const finalIterations = Math.floor(this.baseIterations * globalMultiplier * userMultiplier);
-                return Math.min(finalIterations, 200000); // Cap at 200k iterations
-            }
-
-            async generateVDFProof() {
-                if (!this.isInitialized || this.isVerifying) {
-                    throw new Error('VDF not ready or already computing');
+                } catch (e) {
+                    this.log('⚠️ Module loading failed', 'warning');
                 }
 
-                const iterations = this.calculateCurrentDifficulty();
-                const challenge = new TextEncoder().encode(`monosproof-vdf-${Date.now()}-${Math.random()}`);
-                
-                this.isVerifying = true;
-                this.updateDifficultyDisplay(iterations);
+                throw new Error('No VDF module found. Please copy your built VDF files to the demo directory.');
+            }
+
+            async runInitialValidation() {
+                // Run a small test similar to your production test
+                this.log('🧪 Running initial VDF validation...', 'info');
                 
                 try {
-                    const result = await this.vdfInstance.generate(iterations, challenge, this.keySize);
+                    // Use smaller parameters for initial test like your production tests
+                    const testChallenge = new Uint8Array([0xaa, 0xbb, 0xcc]);
+                    const testIterations = 50; // Small test like your production tests
+                    const testKeySize = 1024;
                     
-                    // Verify the proof
-                    const isValid = await this.vdfInstance.verify(iterations, challenge, result.proof, this.keySize);
+                    const proof = this.vdfInstance.generate(testIterations, testChallenge, testKeySize, false);
+                    const isValid = this.vdfInstance.verify(testIterations, testChallenge, proof, testKeySize, false);
                     
-                    if (!isValid) {
-                        throw new Error('VDF proof verification failed');
+                    if (isValid) {
+                        this.log('✅ VDF validation test passed', 'success');
+                        this.log(`   Proof size: ${proof.length} bytes`, 'info');
+                    } else {
+                        throw new Error('VDF validation test failed');
                     }
                     
-                    // Update statistics
-                    this.totalPurchases++;
-                    this.userPurchases++;
-                    this.totalVDFTime += result.time;
-                    this.totalIterations += iterations;
-                    this.updateStats();
-                    
-                    logVDF(`🎉 VDF purchase completed successfully!`, 'success');
-                    logVDF(`  Proof size: ${result.proof.length} bytes`, 'info');
-                    logVDF(`  Sequential computation verified`, 'success');
-                    
-                    return result;
-                    
-                } finally {
-                    this.isVerifying = false;
+                } catch (error) {
+                    this.log(`❌ VDF validation failed: ${error.message}`, 'error');
+                    throw error;
                 }
             }
 
-            // One-line integration API (MonosProof.protect())
-            async protect(buttonId, options = {}) {
-                const button = document.getElementById(buttonId);
-                if (!button) throw new Error(`Button ${buttonId} not found`);
+            async generateVDFProof(challenge) {
+                if (!this.isReady || !this.vdfInstance) {
+                    throw new Error('VDF not ready');
+                }
 
-                const originalClick = button.onclick;
-                const originalText = button.textContent;
+                this.log(`🔄 Starting VDF computation (${this.iterations.toLocaleString()} iterations)`, 'vdf');
+                this.log(`  Challenge: ${challenge.length} bytes`, 'info');
+                this.log(`  Key size: ${this.keySize} bits`, 'info');
+                this.log(`  Algorithm: Wesolowski`, 'info');
 
-                button.onclick = async (e) => {
-                    e.preventDefault();
+                const startTime = performance.now();
+                let progressInterval;
+                
+                try {
+                    // Start progress tracking
+                    let estimatedProgress = 0;
+                    progressInterval = setInterval(() => {
+                        const elapsed = (performance.now() - startTime) / 1000;
+                        
+                        // Estimate progress (VDF typically takes 3-6 seconds for 20k iterations)
+                        const estimatedDuration = 5; // seconds
+                        estimatedProgress = Math.min((elapsed / estimatedDuration) * 100, 95);
+                        
+                        document.getElementById('progressPercent').textContent = Math.floor(estimatedProgress) + '%';
+                        document.getElementById('progressBar').style.width = estimatedProgress + '%';
+                        document.getElementById('timeElapsed').textContent = elapsed.toFixed(1) + 's';
+                        
+                        const rate = (this.iterations * estimatedProgress / 100) / elapsed;
+                        document.getElementById('currentRate').textContent = rate.toFixed(0);
+                        
+                        this.logPerformance(`VDF progress: ${estimatedProgress.toFixed(1)}%`, 'info');
+                    }, 200);
+
+                    // Generate real VDF proof using your module
+                    const proof = this.vdfInstance.generate(
+                        this.iterations,    // 20,000 iterations 
+                        challenge,          // Challenge bytes
+                        this.keySize,       // 1024-bit key
+                        false              // Wesolowski (not Pietrzak)
+                    );
+
+                    clearInterval(progressInterval);
                     
-                    try {
-                        button.disabled = true;
-                        button.innerHTML = '<span class="spinner"></span> Generating VDF proof...';
-                        
-                        logVDF(`🛡️ MonosProof VDF protection activated for: ${buttonId}`, 'vdf');
-                        
-                        const result = await this.generateVDFProof();
-                        
-                        logVDF(`✅ VDF protection completed in ${result.time.toFixed(2)}s`, 'success');
-                        
-                        // Execute original action
-                        if (originalClick) {
-                            originalClick.call(button, e);
-                        }
-                        
-                        button.textContent = '✅ Purchase Complete!';
-                        button.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
-                        
-                    } catch (error) {
-                        logVDF(`❌ VDF protection failed: ${error.message}`, 'error');
-                        button.textContent = '❌ VDF Failed';
-                        button.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
-                    }
-                    
-                    // Reset button after delay
-                    setTimeout(() => {
-                        button.disabled = false;
-                        button.textContent = originalText;
-                        button.style.background = '';
-                    }, 3000);
-                };
+                    const endTime = performance.now();
+                    const duration = (endTime - startTime) / 1000;
+
+                    // Update final progress
+                    document.getElementById('progressPercent').textContent = '100%';
+                    document.getElementById('progressBar').style.width = '100%';
+                    document.getElementById('timeElapsed').textContent = duration.toFixed(2) + 's';
+                    document.getElementById('currentRate').textContent = (this.iterations / duration).toFixed(0);
+
+                    this.log(`✅ VDF proof generated successfully`, 'success');
+                    this.log(`  Duration: ${duration.toFixed(3)} seconds`, 'success');
+                    this.log(`  Proof size: ${proof.length} bytes`, 'info');
+                    this.log(`  Rate: ${(this.iterations / duration).toFixed(0)} iterations/second`, 'success');
+
+                    return {
+                        proof: proof,
+                        duration: duration,
+                        iterations: this.iterations,
+                        challenge: challenge
+                    };
+
+                } catch (error) {
+                    if (progressInterval) clearInterval(progressInterval);
+                    this.log(`❌ VDF generation failed: ${error.message}`, 'error');
+                    throw error;
+                }
             }
 
-            updateDifficultyDisplay(iterations) {
-                document.getElementById('currentIterations').textContent = iterations.toLocaleString();
-                document.getElementById('difficulty').textContent = iterations.toLocaleString();
+            async verifyVDFProof(challenge, proof) {
+                this.log('🔍 Verifying VDF proof...', 'vdf');
                 
-                const expectedSeconds = (iterations / this.baseIterations) * 3; // Scale from 3 second base
-                let timeText;
-                if (expectedSeconds < 60) {
-                    timeText = `~${expectedSeconds.toFixed(0)} seconds`;
-                } else if (expectedSeconds < 3600) {
-                    timeText = `~${(expectedSeconds / 60).toFixed(1)} minutes`;
-                } else {
-                    timeText = `~${(expectedSeconds / 3600).toFixed(1)} hours`;
-                }
+                const startTime = performance.now();
                 
-                document.getElementById('expectedTime').textContent = timeText;
-                
-                // Show CPU warning for high difficulties
-                const warning = document.getElementById('cpuWarning');
-                if (iterations > 50000) {
-                    warning.classList.add('show');
-                } else {
-                    warning.classList.remove('show');
+                try {
+                    // Verify using your VDF module
+                    const isValid = this.vdfInstance.verify(
+                        this.iterations,    // Same iterations
+                        challenge,          // Same challenge
+                        proof,             // Generated proof
+                        this.keySize,      // Same key size
+                        false              // Wesolowski
+                    );
+
+                    const verifyTime = (performance.now() - startTime) / 1000;
+
+                    if (isValid) {
+                        this.successfulVerifications++;
+                        this.log(`✅ VDF proof verification PASSED`, 'success');
+                        this.log(`  Verification time: ${verifyTime.toFixed(3)}s`, 'success');
+                    } else {
+                        this.log(`❌ VDF proof verification FAILED`, 'error');
+                    }
+
+                    return isValid;
+
+                } catch (error) {
+                    this.log(`❌ VDF verification error: ${error.message}`, 'error');
+                    return false;
                 }
             }
 
             updateStats() {
-                document.getElementById('totalPurchases').textContent = this.totalPurchases;
+                document.getElementById('vdfProofs').textContent = this.totalProofs;
                 document.getElementById('totalIterations').textContent = this.totalIterations.toLocaleString();
-                document.getElementById('totalTime').textContent = this.totalVDFTime.toFixed(1) + 's';
-                document.getElementById('ticketsRemaining').textContent = this.totalPurchases;
+                document.getElementById('totalTime').textContent = this.totalTime.toFixed(2) + 's';
+                document.getElementById('totalPurchases').textContent = this.totalProofs;
                 
-                const energyCost = (this.totalVDFTime / 3600) * 0.15; // $0.15/hour for VDF computation
-                document.getElementById('energyCost').textContent = '$' + energyCost.toFixed(4);
+                if (this.totalProofs > 0) {
+                    const successRate = ((this.successfulVerifications / this.totalProofs) * 100).toFixed(1);
+                    document.getElementById('successRate').textContent = successRate + '%';
+                }
             }
 
-            updateVDFStatus(status) {
+            updateStatus(status) {
                 document.getElementById('vdfStatus').textContent = status;
+            }
+
+            showSetupInstructions() {
+                document.getElementById('setupInstructions').style.display = 'block';
+                document.getElementById('purchaseBtn').disabled = true;
+                document.getElementById('purchaseBtn').innerHTML = '❌ VDF Module Required';
+            }
+
+            log(message, type = 'info') {
+                const log = document.getElementById('systemLog');
+                const timestamp = new Date().toLocaleTimeString();
+                const entry = document.createElement('div');
+                entry.className = `log-entry log-${type}`;
+                entry.textContent = `[${timestamp}] ${message}`;
+                log.appendChild(entry);
+                log.scrollTop = log.scrollHeight;
+
+                while (log.children.length > 50) {
+                    log.removeChild(log.firstChild);
+                }
+                
+                console.log(`[VDF] ${message}`);
+            }
+
+            logPerformance(message, type = 'info') {
+                const log = document.getElementById('performanceLog');
+                const timestamp = new Date().toLocaleTimeString();
+                const entry = document.createElement('div');
+                entry.className = `log-entry log-${type}`;
+                entry.textContent = `[${timestamp}] ${message}`;
+                log.appendChild(entry);
+                log.scrollTop = log.scrollHeight;
+
+                while (log.children.length > 50) {
+                    log.removeChild(log.firstChild);
+                }
             }
         }
 
-        // Global VDF instance
-        let monosProofVDF = null;
-
-        // UI Management Variables
+        // Global variables
+        let realVDF = null;
         let selectedTicketType = 'standard';
         let selectedPrice = 149;
         let quantity = 1;
-        let currentPurchaseIndex = 0;
-        let targetQuantity = 0;
-        let completedPurchases = 0;
 
-        // Enhanced logging functions
-        function logVDF(message, type = 'info') {
-            const log = document.getElementById('systemLog');
-            const timestamp = new Date().toLocaleTimeString();
-            const entry = document.createElement('div');
-            entry.className = `log-entry log-${type}`;
-            entry.textContent = `[${timestamp}] ${message}`;
-            log.appendChild(entry);
-            log.scrollTop = log.scrollHeight;
-
-            // Keep only last 20 entries
-            while (log.children.length > 20) {
-                log.removeChild(log.firstChild);
+        // Purchase Flow with Real VDF
+        async function startRealVDFPurchase() {
+            if (!realVDF || !realVDF.isReady || realVDF.isProcessing) {
+                return;
             }
-        }
 
-        function logPerformance(message, type = 'info') {
-            const log = document.getElementById('performanceLog');
-            const timestamp = new Date().toLocaleTimeString();
-            const entry = document.createElement('div');
-            entry.className = `log-entry log-${type}`;
-            entry.textContent = `[${timestamp}] ${message}`;
-            log.appendChild(entry);
-            log.scrollTop = log.scrollHeight;
-
-            // Keep only last 20 entries
-            while (log.children.length > 20) {
-                log.removeChild(log.firstChild);
-            }
-        }
-
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type}`;
-            toast.classList.add('show');
+            realVDF.isProcessing = true;
             
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            const purchaseBtn = document.getElementById('purchaseBtn');
+            const securityChallenge = document.getElementById('securityChallenge');
+            
+            purchaseBtn.disabled = true;
+            purchaseBtn.innerHTML = '<span class="spinner"></span> Generating Real VDF Proof...';
+            securityChallenge.classList.add('active');
+
+            realVDF.log(`🎫 Starting real VDF purchase: ${quantity}x ${selectedTicketType.toUpperCase()}`, 'vdf');
+            
+            try {
+                for (let i = 0; i < quantity; i++) {
+                    realVDF.log(`🛡️ Processing ticket ${i + 1}/${quantity} with real VDF`, 'warning');
+                    
+                    // Generate unique challenge for each ticket (like your production tests)
+                    const challenge = new Uint8Array([
+                        0xaa, 0xbb, 0xcc, 0xdd,
+                        ...new TextEncoder().encode(`ticket-${Date.now()}-${i}-${Math.random()}`)
+                    ]);
+                    
+                    // Real VDF computation using your module
+                    const vdfResult = await realVDF.generateVDFProof(challenge);
+                    
+                    // Verify the proof immediately (like your production tests)
+                    const isValid = await realVDF.verifyVDFProof(challenge, vdfResult.proof);
+                    
+                    if (!isValid) {
+                        throw new Error(`Real VDF verification failed for ticket ${i + 1}`);
+                    }
+                    
+                    // Update statistics
+                    realVDF.totalProofs++;
+                    realVDF.totalTime += vdfResult.duration;
+                    realVDF.totalIterations += vdfResult.iterations;
+                    realVDF.updateStats();
+                    
+                    realVDF.log(`✅ Ticket ${i + 1}/${quantity} VDF completed`, 'success');
+                    realVDF.logPerformance(`${vdfResult.iterations.toLocaleString()} iterations in ${vdfResult.duration.toFixed(3)}s`, 'success');
+                    
+                    // Update progress
+                    const progress = ((i + 1) / quantity) * 100;
+                    document.getElementById('progressBar').style.width = progress + '%';
+                    purchaseBtn.innerHTML = `<span class="spinner"></span> Processing ${i + 1}/${quantity} tickets...`;
+                }
+                
+                // All tickets completed
+                purchaseBtn.innerHTML = '✅ All Real VDF Tickets Purchased!';
+                purchaseBtn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+                
+                realVDF.log(`🎉 All ${quantity} tickets purchased with real VDF protection!`, 'success');
+                
+                // Reset after delay
+                setTimeout(() => {
+                    purchaseBtn.innerHTML = '🔒 Purchase Tickets (Real VDF)';
+                    purchaseBtn.style.background = 'linear-gradient(135deg, #8A2BE2 0%, #9932CC 100%)';
+                    purchaseBtn.disabled = false;
+                    document.getElementById('progressBar').style.width = '0%';
+                    securityChallenge.classList.remove('active');
+                    
+                    // Reset progress displays
+                    document.getElementById('progressPercent').textContent = '0%';
+                    document.getElementById('timeElapsed').textContent = '0.0s';
+                    document.getElementById('currentRate').textContent = '--';
+                }, 4000);
+                
+            } catch (error) {
+                realVDF.log(`❌ Real VDF purchase failed: ${error.message}`, 'error');
+                purchaseBtn.innerHTML = '❌ Real VDF Failed';
+                purchaseBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+                
+                setTimeout(() => {
+                    purchaseBtn.innerHTML = '🔒 Purchase Tickets (Real VDF)';
+                    purchaseBtn.style.background = 'linear-gradient(135deg, #8A2BE2 0%, #9932CC 100%)';
+                    purchaseBtn.disabled = false;
+                    securityChallenge.classList.remove('active');
+                }, 3000);
+            }
+            
+            realVDF.isProcessing = false;
         }
 
         // UI Event Handlers
@@ -1346,7 +1037,9 @@
             selectedPrice = price;
             updateTotal();
             
-            logVDF(`Ticket selected: ${type.toUpperCase()} - ${price}`, 'info');
+            if (realVDF) {
+                realVDF.log(`Ticket selected: ${type.toUpperCase()} - ${price}`, 'info');
+            }
         }
 
         function changeQuantity(delta) {
@@ -1355,7 +1048,10 @@
                 quantity = newQuantity;
                 document.getElementById('quantity').textContent = quantity;
                 updateTotal();
-                logVDF(`Quantity changed to ${quantity} (each requires separate VDF)`, 'info');
+                
+                if (realVDF) {
+                    realVDF.log(`Quantity changed to ${quantity} (each requires real VDF)`, 'info');
+                }
             }
         }
 
@@ -1373,346 +1069,128 @@
                 `${quantity} × ${typeNames[selectedTicketType]} (${selectedPrice} each)`;
         }
 
-        // VDF Purchase Flow
-        async function startVDFVerification() {
-            if (!monosProofVDF || !monosProofVDF.isInitialized || monosProofVDF.isVerifying) return;
-            
-            targetQuantity = quantity;
-            currentPurchaseIndex = 0;
-            completedPurchases = 0;
-            
-            logVDF(`🎫 Starting VDF purchase sequence: ${targetQuantity}x ${selectedTicketType.toUpperCase()}`, 'vdf');
-            logVDF(`Each ticket requires individual VDF proof generation`, 'warning');
-            
-            document.getElementById('verifyBtn').disabled = true;
-            document.getElementById('verifyBtn').innerHTML = `<span class="spinner"></span> Processing 0/${targetQuantity} tickets...`;
-            document.getElementById('stopTestsBtn').disabled = false;
-            
-            const securityChallenge = document.getElementById('securityChallenge');
-            securityChallenge.classList.add('active');
-            
-            // Start the first VDF purchase
-            await processSingleVDFTicket();
-        }
-
-        async function processSingleVDFTicket() {
-            if (currentPurchaseIndex >= targetQuantity) {
-                completeAllVDFPurchases();
-                return;
-            }
-
-            currentPurchaseIndex++;
-            
-            logVDF(`🛡️ Processing VDF ticket ${currentPurchaseIndex}/${targetQuantity}`, 'warning');
-            logPerformance(`VDF iterations: ${monosProofVDF.calculateCurrentDifficulty().toLocaleString()}`, 'info');
-            
-            try {
-                const result = await monosProofVDF.generateVDFProof();
-                
-                completedPurchases++;
-                
-                const energyCost = (result.time / 3600) * 0.15;
-                
-                logVDF(`✅ VDF Ticket ${completedPurchases}/${targetQuantity} completed!`, 'success');
-                logPerformance(`${result.iterations.toLocaleString()} iterations in ${result.time.toFixed(1)}s`, 'success');
-                logPerformance(`Energy cost: ${energyCost.toFixed(4)}`, 'info');
-                
-                // Update progress
-                document.getElementById('verifyBtn').innerHTML = `<span class="spinner"></span> Processing ${completedPurchases}/${targetQuantity} tickets...`;
-                
-                const overallProgress = (completedPurchases / targetQuantity) * 100;
-                document.getElementById('overallProgress').style.width = overallProgress + '%';
-                
-                // Continue to next ticket after short delay
-                setTimeout(() => {
-                    processSingleVDFTicket();
-                }, 1000);
-                
-            } catch (error) {
-                logVDF(`❌ VDF computation failed: ${error.message}`, 'error');
-                completeAllVDFPurchases();
-            }
-        }
-
-        function completeAllVDFPurchases() {
-            const securityChallenge = document.getElementById('securityChallenge');
-            securityChallenge.classList.remove('active');
-            
-            document.getElementById('stopTestsBtn').disabled = true;
-            document.getElementById('progressBar').style.width = '100%';
-            document.getElementById('overallProgress').style.width = '100%';
-            document.getElementById('verifyBtn').innerHTML = '✅ All VDF Tickets Purchased!';
-            document.getElementById('verifyBtn').style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
-            
-            showToast(`${targetQuantity} tickets purchased with VDF protection! Confirmation sent.`, 'success');
-            logVDF(`🎉 All ${targetQuantity} VDF tickets purchased successfully!`, 'success');
-            
-            // Reset for next purchase
-            setTimeout(() => {
-                document.getElementById('verifyBtn').innerHTML = '🔒 Purchase Tickets (VDF Protected)';
-                document.getElementById('verifyBtn').style.background = 'linear-gradient(135deg, #8A2BE2 0%, #9932CC 100%)';
-                document.getElementById('verifyBtn').disabled = false;
-                document.getElementById('progressBar').style.width = '0%';
-                document.getElementById('overallProgress').style.width = '0%';
-                
-                // Reset progress display
-                document.getElementById('currentIteration').textContent = '0';
-                document.getElementById('progressPercent').textContent = '0%';
-                document.getElementById('timeElapsed').textContent = '0.0s';
-            }, 4000);
-        }
-
-        // Bot Simulation with VDF
-        async function simulateSingleBotVDF() {
-            if (monosProofVDF.isTestRunning || monosProofVDF.isVerifying) return;
-            
-            monosProofVDF.isTestRunning = true;
-            document.getElementById('stopTestsBtn').disabled = false;
-            
-            logVDF('🤖 Single bot detected! Testing VDF countermeasures...', 'warning');
-            logVDF('Bot must complete full VDF computation - no shortcuts possible', 'error');
-            
-            await continuousVDFBotPurchase(1);
-        }
-
-        async function continuousVDFBotPurchase(botId) {
-            if (!monosProofVDF.isTestRunning) return;
-            
-            logPerformance(`Bot #${botId} starting VDF computation`, 'working');
-            
-            try {
-                // Bot must complete full VDF - no bypassing possible
-                const iterations = monosProofVDF.calculateCurrentDifficulty();
-                logPerformance(`Bot #${botId} forced to compute ${iterations.toLocaleString()} VDF iterations`, 'working');
-                
-                const startTime = Date.now();
-                const result = await monosProofVDF.generateVDFProof();
-                const duration = (Date.now() - startTime) / 1000;
-                
-                const energyCost = (duration / 3600) * 0.15;
-                
-                logVDF(`⚡ Bot #${botId} VDF completed (${duration.toFixed(1)}s)`, 'success');
-                logPerformance(`Bot #${botId}: ${result.iterations.toLocaleString()} iterations at ${(result.iterations/duration).toFixed(0)} iter/s`, 'success');
-                logPerformance(`Bot #${botId} energy cost: ${energyCost.toFixed(4)}`, 'working');
-                
-                // Continue if still running
-                if (monosProofVDF.isTestRunning) {
-                    setTimeout(() => {
-                        continuousVDFBotPurchase(botId);
-                    }, 1000);
-                }
-                
-            } catch (error) {
-                logVDF(`❌ Bot #${botId} VDF failed: ${error.message}`, 'error');
-            }
-        }
-
-        async function simulateSmallBotFarmVDF() {
-            if (monosProofVDF.isTestRunning || monosProofVDF.isVerifying) return;
-            
-            monosProofVDF.isTestRunning = true;
-            document.getElementById('stopTestsBtn').disabled = false;
-            
-            logVDF('🤖 Small bot farm detected! All bots must compute VDFs...', 'warning');
-            logVDF('10 bots launching - each must complete sequential computation', 'error');
-            
-            // Launch 10 concurrent VDF computations
-            for (let i = 0; i < 10; i++) {
-                setTimeout(() => {
-                    if (monosProofVDF.isTestRunning) {
-                        simulateVDFBotPurchase(i + 1);
-                    }
-                }, i * 300);
-            }
-            
-            setTimeout(() => {
-                if (monosProofVDF.isTestRunning) {
-                    logVDF('🛡️ Small bot farm defeated by VDF requirements', 'success');
-                    monosProofVDF.isTestRunning = false;
-                    document.getElementById('stopTestsBtn').disabled = true;
-                }
-            }, 45000);
-        }
-
-        async function simulateMassBotAttackVDF() {
-            if (monosProofVDF.isTestRunning || monosProofVDF.isVerifying) return;
-            
-            monosProofVDF.isTestRunning = true;
-            document.getElementById('stopTestsBtn').disabled = false;
-            
-            logVDF('🔥 MASSIVE bot attack detected! VDF defense activating!', 'error');
-            logVDF('100 bots launching - each requires full VDF computation', 'error');
-            
-            // Launch 100 bots - each must complete VDF
-            for (let i = 0; i < 100; i++) {
-                setTimeout(() => {
-                    if (monosProofVDF.isTestRunning) {
-                        if (i % 25 === 0) {
-                            logVDF(`Deploying VDF defense wave ${Math.floor(i/25)+1}/4 (${25} bots)...`, 'error');
-                        }
-                        simulateVDFBotPurchase(i + 1);
-                    }
-                }, i * 150);
-            }
-            
-            setTimeout(() => {
-                if (monosProofVDF.isTestRunning) {
-                    logVDF('🛡️ Massive attack repelled by VDF sequential computation requirements', 'success');
-                    logVDF('VDF defense successful - attack economically unfeasible', 'success');
-                    monosProofVDF.isTestRunning = false;
-                    document.getElementById('stopTestsBtn').disabled = true;
-                }
-            }, 90000);
-        }
-
-        async function simulateVDFBotPurchase(botId) {
-            if (!monosProofVDF.isTestRunning) return;
-
-            logPerformance(`Bot #${botId} starting VDF computation`, 'working');
-            
-            try {
-                const iterations = monosProofVDF.calculateCurrentDifficulty();
-                logPerformance(`Bot #${botId} computing ${iterations.toLocaleString()} VDF iterations`, 'working');
-                
-                const startTime = Date.now();
-                const result = await monosProofVDF.generateVDFProof();
-                const duration = (Date.now() - startTime) / 1000;
-                
-                const energyCost = (duration / 3600) * 0.15;
-                
-                logVDF(`⚡ Bot #${botId} VDF purchase completed (${duration.toFixed(1)}s)`, 'success');
-                logPerformance(`Bot #${botId}: ${result.iterations.toLocaleString()} iterations, cost: ${energyCost.toFixed(4)}`, 'success');
-                
-            } catch (error) {
-                logVDF(`❌ Bot #${botId} VDF computation failed: ${error.message}`, 'error');
-            }
-        }
-
-        function stopAllVDFTests() {
-            monosProofVDF.isTestRunning = false;
-            
-            if (monosProofVDF.isVerifying) {
-                logVDF('🛑 VDF purchase stopped by user', 'warning');
-                monosProofVDF.isVerifying = false;
-                
-                // Reset purchase state
-                currentPurchaseIndex = 0;
-                targetQuantity = 0;
-                completedPurchases = 0;
-                
-                // Reset UI
-                document.getElementById('verifyBtn').innerHTML = '🔒 Purchase Tickets (VDF Protected)';
-                document.getElementById('verifyBtn').disabled = false;
-                document.getElementById('verifyBtn').style.background = 'linear-gradient(135deg, #8A2BE2 0%, #9932CC 100%)';
-                document.getElementById('securityChallenge').classList.remove('active');
-            }
-            
-            // Reset progress bars
-            document.getElementById('progressBar').style.width = '0%';
-            document.getElementById('overallProgress').style.width = '0%';
-            document.getElementById('stopTestsBtn').disabled = true;
-            
-            // Reset VDF progress display
-            document.getElementById('currentIteration').textContent = '0';
-            document.getElementById('progressPercent').textContent = '0%';
-            document.getElementById('timeElapsed').textContent = '0.0s';
-            
-            logVDF('🛑 All VDF operations stopped by user', 'info');
-            logPerformance('All VDF computations terminated', 'info');
-        }
-
-        // Initialize system when page loads
-        window.addEventListener('load', async () => {
-            // Initialize VDF system
-            monosProofVDF = new MonosProofVDF();
-            
-            // Initialize UI
-            updateTotal();
-            
-            logVDF('🛡️ SecureTickets Pro initialized with VDF protection', 'success');
-            logVDF('🎯 Wesolowski VDF defense: ACTIVE', 'success');
-            logVDF('📊 Progressive difficulty scaling enabled', 'info');
-            logPerformance('Ready to demonstrate VDF sequential computation', 'info');
-            
-            // Update initial difficulty display
-            monosProofVDF.updateDifficultyDisplay(monosProofVDF.baseIterations);
-        });
-
-        // Background system monitoring
-        setInterval(() => {
-            if (monosProofVDF && !monosProofVDF.isVerifying && !monosProofVDF.isTestRunning) {
-                const activities = [
-                    'VDF system monitoring: All functions operational',
-                    'Cryptographic verification ready',
-                    'Sequential computation engine: Standing by',
-                    'Wesolowski algorithm: Ready for proof generation',
-                    'Progressive difficulty: Monitoring demand patterns'
-                ];
-                
-                const randomActivity = activities[Math.floor(Math.random() * activities.length)];
-                logVDF(randomActivity, 'info');
-            }
-        }, 20000);
-
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            if (monosProofVDF) {
-                monosProofVDF.isTestRunning = false;
-                monosProofVDF.isVerifying = false;
-            }
-        });
-
-        // API Integration Example (MonosProof.protect() - One Line Integration)
+        // MonosProof API - Real VDF Only (following your production test patterns)
         window.MonosProof = {
             protect: async function(buttonId, options = {}) {
-                if (!monosProofVDF || !monosProofVDF.isInitialized) {
-                    throw new Error('MonosProof VDF system not initialized');
+                if (!realVDF || !realVDF.isReady) {
+                    throw new Error('Real Autonomys VDF system not initialized');
                 }
                 
-                return await monosProofVDF.protect(buttonId, options);
-            },
-            
-            // Additional API methods
-            setDifficulty: function(iterations) {
-                if (monosProofVDF) {
-                    monosProofVDF.baseIterations = iterations;
-                    logVDF(`VDF base difficulty set to ${iterations.toLocaleString()} iterations`, 'info');
-                }
+                const button = document.getElementById(buttonId);
+                if (!button) throw new Error(`Button ${buttonId} not found`);
+
+                const originalClick = button.onclick;
+                const originalText = button.textContent;
+
+                button.onclick = async (e) => {
+                    e.preventDefault();
+                    
+                    try {
+                        button.disabled = true;
+                        button.innerHTML = '<span class="spinner"></span> Real VDF Computing...';
+                        
+                        realVDF.log(`🛡️ MonosProof real VDF protection activated: ${buttonId}`, 'vdf');
+                        
+                        // Generate challenge like your production tests
+                        const challenge = new Uint8Array([
+                            0x12, 0x34, 0x56, 0x78,
+                            ...new TextEncoder().encode(`protect-${Date.now()}-${Math.random()}`)
+                        ]);
+                        
+                        const vdfResult = await realVDF.generateVDFProof(challenge);
+                        const isValid = await realVDF.verifyVDFProof(challenge, vdfResult.proof);
+                        
+                        if (!isValid) {
+                            throw new Error('Real VDF verification failed');
+                        }
+                        
+                        realVDF.log(`✅ Real VDF protection completed in ${vdfResult.duration.toFixed(3)}s`, 'success');
+                        
+                        // Execute original action
+                        if (originalClick) {
+                            originalClick.call(button, e);
+                        }
+                        
+                        button.textContent = '✅ Real VDF Complete!';
+                        button.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+                        
+                    } catch (error) {
+                        realVDF.log(`❌ Real VDF protection failed: ${error.message}`, 'error');
+                        button.textContent = '❌ Real VDF Failed';
+                        button.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+                    }
+                    
+                    // Reset button
+                    setTimeout(() => {
+                        button.disabled = false;
+                        button.textContent = originalText;
+                        button.style.background = '';
+                    }, 3000);
+                };
             },
             
             getStats: function() {
-                if (!monosProofVDF) return null;
+                if (!realVDF) return null;
                 
                 return {
-                    totalPurchases: monosProofVDF.totalPurchases,
-                    totalVDFTime: monosProofVDF.totalVDFTime,
-                    totalIterations: monosProofVDF.totalIterations,
-                    currentDifficulty: monosProofVDF.calculateCurrentDifficulty(),
-                    isReady: monosProofVDF.isInitialized
+                    totalProofs: realVDF.totalProofs,
+                    totalTime: realVDF.totalTime,
+                    totalIterations: realVDF.totalIterations,
+                    successRate: realVDF.totalProofs > 0 ? (realVDF.successfulVerifications / realVDF.totalProofs) : 0,
+                    library: 'Real Autonomys VDF',
+                    isReady: realVDF.isReady,
+                    iterations: realVDF.iterations,
+                    keySize: realVDF.keySize
+                };
+            },
+            
+            // Test function similar to your production tests
+            runTest: async function(iterations = 50) {
+                if (!realVDF || !realVDF.isReady) {
+                    throw new Error('VDF not ready');
+                }
+                
+                const challenge = new Uint8Array([0xaa, 0xbb, 0xcc, 0xdd]);
+                const proof = realVDF.vdfInstance.generate(iterations, challenge, 1024, false);
+                const isValid = realVDF.vdfInstance.verify(iterations, challenge, proof, 1024, false);
+                
+                return {
+                    iterations: iterations,
+                    proofLength: proof.length,
+                    isValid: isValid,
+                    message: isValid ? 'VDF test passed' : 'VDF test failed'
                 };
             }
         };
 
-        // Demo: Show one-line integration in console
-        setTimeout(() => {
-            if (monosProofVDF && monosProofVDF.isInitialized) {
-                console.log('🛡️ MonosProof VDF One-Line Integration Example:');
-                console.log('MonosProof.protect("your-button-id", {keySize: 1024});');
-                console.log('');
-                console.log('📊 Current VDF Stats:', window.MonosProof.getStats());
-            }
-        }, 3000);
-    </script>
+        // Initialize Real VDF System
+        window.addEventListener('load', async () => {
+            realVDF = new RealAutonomysVDF();
+            updateTotal();
+            
+            console.log('🛡️ MonosProof Real Autonomys VDF Demo loaded');
+            console.log('📋 Using your actual VDF build - no simulations');
+            console.log('🔧 Integration: MonosProof.protect("button-id")');
+        });
 
-    <!-- Example: MonosProof One-Line Integration -->
-    <!-- 
-    <script>
-        // Simple one-line integration example:
-        // MonosProof.protect('purchase-button', {keySize: 1024});
-        
-        // The button will automatically be protected with VDF computation
-        // Users must complete sequential cryptographic proof before purchase
+        // Demo: Show VDF integration examples
+        setTimeout(() => {
+            if (realVDF && realVDF.isReady) {
+                console.log('');
+                console.log('🛡️ MonosProof Real VDF Integration:');
+                console.log('MonosProof.protect("your-button-id");');
+                console.log('');
+                console.log('🧪 Test your VDF:');
+                console.log('MonosProof.runTest(50);');
+                console.log('');
+                console.log('📊 VDF Stats:', window.MonosProof.getStats());
+            }
+        }, 5000);
+
+        // Make functions globally available
+        window.startRealVDFPurchase = startRealVDFPurchase;
+        window.selectTicket = selectTicket;
+        window.changeQuantity = changeQuantity;
     </script>
-    -->
 </body>
 </html>
