@@ -51,11 +51,13 @@ fi
 if ! command_exists emcc; then
     echo "Error: emcc not found. Emscripten SDK not properly activated" >&2
     exit 1
+# --- Inject browser glue for generate/verify after every build ---
 fi
 
 echo "Cleaning previous builds..."
 cargo clean
 rm -rf dist
+
 
 echo "Building WebAssembly..."
 if ! cargo build --target wasm32-unknown-emscripten; then
@@ -74,6 +76,13 @@ sed -i 's/new as(buffer,pointer,size\/as\.BYTES_PER_ELEMENT)/new as(HEAPU8.buffe
 # Verify the fix was applied
 if ! grep -q "HEAPU8.buffer" src/vdf.js; then
     echo "Warning: Buffer reference fix may not have been applied" >&2
+fi
+
+# Inject cwrap polyfill if missing (workaround for Emscripten/Cargo bug)
+if ! grep -q "cwrap" src/vdf.js; then
+    echo "Injecting cwrap polyfill into src/vdf.js..."
+    # Insert after the first var Module=... line
+    awk 'NR==1{print; print "\n// Polyfill for cwrap (injected by build.sh)\nif (typeof Module !== \"undefined\" && typeof Module.cwrap !== \"function\") {\n  Module.cwrap = function(ident, returnType, argTypes) {\n    var fn = Module[\"_\"+ident];\n    if (!fn) throw new Error(\"Function \"+ident+\" not found in WASM exports\");\n    return fn;\n  };\n}\n"; next} 1' src/vdf.js > src/vdf.js.tmp && mv src/vdf.js.tmp src/vdf.js
 fi
 
 echo "Linting TypeScript..."

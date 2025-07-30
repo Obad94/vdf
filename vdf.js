@@ -1,4 +1,14 @@
 // src/vdf.js
+
+// Polyfill for cwrap (injected by build.sh)
+if (typeof Module !== "undefined" && typeof Module.cwrap !== "function") {
+  Module.cwrap = function(ident, returnType, argTypes) {
+    var fn = Module["_"+ident];
+    if (!fn) throw new Error("Function "+ident+" not found in WASM exports");
+    return fn;
+  };
+}
+
 var Module = (() => {
   var _scriptName = typeof document != 'undefined' ? document.currentScript?.src : undefined;
   return (
@@ -12,6 +22,75 @@ var Module=moduleArg;var ENVIRONMENT_IS_WEB=typeof window=="object";var ENVIRONM
 }
 );
 })();
+
+// --- Browser glue: attach generate/verify to returned Module instance ---
+if (typeof window !== "undefined" && typeof Module === "function") {
+  const origModule = Module;
+  Module = async function(...args) {
+    const mod = await origModule(...args);
+    // Attach generate
+    mod.generate = function(iterations, challenge, intSizeBits, isPietrzak) {
+      if (isPietrzak && (iterations % 2 !== 0 || iterations < 66)) {
+        throw new Error('Number of iterations must be even and at least 66');
+      }
+      if (!challenge || challenge.length === 0) {
+        throw new Error('Challenge must not be empty');
+      }
+      const validSizes = [1024, 2048, 3072, 4096];
+      if (!validSizes.includes(intSizeBits)) {
+        throw new Error('intSizeBits must be one of 1024, 2048, 3072, 4096');
+      }
+      const challengePtr = mod.allocateBytes(challenge.length, challenge);
+      const proofPtr = mod.allocatePointer();
+      const proofSizePtr = mod.allocateBytes(4);
+      const result = mod._generate(
+        iterations,
+        challengePtr,
+        challengePtr.length,
+        intSizeBits,
+        isPietrzak,
+        proofPtr,
+        proofSizePtr,
+      );
+      if (result === 0) {
+        const proof = proofPtr.dereference(proofSizePtr.get(Uint32Array)[0]);
+        const proofValue = proof.get();
+        proofPtr.free();
+        proofSizePtr.free();
+        challengePtr.free();
+        proof.free();
+        return proofValue;
+      } else {
+        proofPtr.free();
+        proofSizePtr.free();
+        challengePtr.free();
+        throw new Error('Failed to generate proof');
+      }
+    };
+    // Attach verify
+    mod.verify = function(iterations, challenge, proof, intSizeBits, isPietrzak) {
+      if (isPietrzak && (iterations % 2 !== 0 || iterations < 66)) {
+        throw new Error('Number of iterations must be even and at least 66');
+      }
+      const challengeBuffer = mod.allocateBytes(0, challenge);
+      const proofBuffer = mod.allocateBytes(0, proof);
+      const result = mod._verify(
+        iterations,
+        challengeBuffer,
+        challengeBuffer.length,
+        proofBuffer,
+        proofBuffer.length,
+        intSizeBits,
+        isPietrzak,
+      );
+      challengeBuffer.free();
+      proofBuffer.free();
+      return Boolean(result);
+    };
+    return mod;
+  };
+}
+
 if (typeof exports === 'object' && typeof module === 'object') {
   module.exports = Module;
   // This default export looks redundant, but it allows TS to import this

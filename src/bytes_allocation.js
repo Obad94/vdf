@@ -74,8 +74,38 @@
         pointers = [];
     }
     
+
     Module["createPointer"] = createPointer;
     Module["allocatePointer"] = allocatePointer;
     Module["allocateBytes"] = allocateBytes;
     Module["freeBytes"] = freeBytes;
+
+    // Expose VDF functions as JS methods using cwrap for browser, after WASM is ready
+    if (typeof Module !== 'undefined') {
+        Module.postRun = Module.postRun || [];
+        Module.postRun.push(function() {
+            if (typeof Module.cwrap === 'function') {
+                // generate: (u32, u8*, usize, u16, bool, u8**, usize*) -> u8
+                Module.generate = Module.cwrap('generate', 'number', [
+                    'number', // iterations (u32)
+                    'number', // challenge (u8*)
+                    'number', // challenge_size (usize)
+                    'number', // int_size_bits (u16)
+                    'boolean',// is_pietrzak (bool)
+                    'number', // proof (u8**)
+                    'number'  // proof_size (usize*)
+                ]);
+                // verify: (u32, u8*, usize, u8*, usize, u32, bool) -> bool
+                Module.verify = Module.cwrap('verify', 'boolean', [
+                    'number', // iterations (u32)
+                    'number', // challenge (u8*)
+                    'number', // challenge_size (usize)
+                    'number', // proof (u8*)
+                    'number', // proof_size (usize)
+                    'number', // int_size_bits (u32)
+                    'boolean' // is_pietrzak (bool)
+                ]);
+            }
+        });
+    }
 })();

@@ -734,10 +734,30 @@ cp src/vdf.wasm ./</code></pre>
                 try {
                     if (typeof Module !== 'undefined' && typeof Module === 'function') {
                         this.vdfInstance = await Module();
+                        // Wait for onRuntimeInitialized to ensure postRun is complete
+                        if (this.vdfInstance.onRuntimeInitialized) {
+                            await new Promise(resolve => {
+                                const prev = this.vdfInstance.onRuntimeInitialized;
+                                this.vdfInstance.onRuntimeInitialized = () => {
+                                    prev && prev();
+                                    resolve();
+                                };
+                            });
+                        }
                         this.log('✅ Loaded VDF from Module()', 'success');
                         return;
                     } else if (typeof Module !== 'undefined' && Module.ready) {
                         await Module.ready;
+                        // Wait for onRuntimeInitialized if present
+                        if (Module.onRuntimeInitialized) {
+                            await new Promise(resolve => {
+                                const prev = Module.onRuntimeInitialized;
+                                Module.onRuntimeInitialized = () => {
+                                    prev && prev();
+                                    resolve();
+                                };
+                            });
+                        }
                         this.vdfInstance = Module;
                         this.log('✅ Loaded VDF from Module.ready', 'success');
                         return;
