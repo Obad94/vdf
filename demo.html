@@ -672,6 +672,20 @@ cp src/vdf.wasm ./</code></pre>
                     🔒 Purchase Tickets (Real VDF)
                 </button>
             </div>
+            <div class="action-buttons" style="margin-top: 1rem;">
+                <button class="btn btn-bot-single" style="background:linear-gradient(135deg,#4CAF50,#45a049);color:white;" onclick="simulateSingleBotVDF()">
+                    🤖 Single Bot Test
+                </button>
+                <button class="btn btn-bot-small" style="background:linear-gradient(135deg,#2196F3,#1976D2);color:white;" onclick="simulateSmallBotFarmVDF()">
+                    🤖 Small Bot Farm (10 bots)
+                </button>
+                <button class="btn btn-bot-large" style="background:linear-gradient(135deg,#e91e63,#c2185b);color:white;" onclick="simulateMassBotAttackVDF()">
+                    🔥 Mass Bot Attack (100 bots)
+                </button>
+                <button class="btn btn-stop" style="background:linear-gradient(135deg,#f44336,#d32f2f);color:white;" onclick="stopAllTestsVDF()" id="stopTestsBtnVDF" disabled>
+                    🛑 Stop All Tests
+                </button>
+            </div>
         </div>
 
         <div class="log-section">
@@ -852,8 +866,9 @@ cp src/vdf.wasm ./</code></pre>
                 document.getElementById('totalTime').textContent = this.totalTime.toFixed(2) + 's';
                 document.getElementById('totalPurchases').textContent = this.totalProofs;
                 if (this.totalProofs > 0) {
-                    const successRate = ((this.successfulVerifications / this.totalProofs) * 100).toFixed(1);
-                    document.getElementById('successRate').textContent = successRate + '%';
+                    let successRate = (this.successfulVerifications / this.totalProofs) * 100;
+                    if (successRate > 100) successRate = 100;
+                    document.getElementById('successRate').textContent = successRate.toFixed(1) + '%';
                 }
             }
 
@@ -1154,6 +1169,83 @@ cp src/vdf.wasm ./</code></pre>
         window.startRealVDFPurchase = startRealVDFPurchase;
         window.selectTicket = selectTicket;
         window.changeQuantity = changeQuantity;
+
+        // --- VDF Bot Simulation Logic ---
+        let vdfTestRunning = false;
+        let vdfTestBots = [];
+
+        async function simulateSingleBotVDF() {
+            if (vdfTestRunning || !realVDF || !realVDF.isReady) return;
+            vdfTestRunning = true;
+            document.getElementById('stopTestsBtnVDF').disabled = false;
+            realVDF.log('🤖 Single bot test started (real VDF)', 'warning');
+            runBotVDF(1);
+        }
+
+        async function simulateSmallBotFarmVDF() {
+            if (vdfTestRunning || !realVDF || !realVDF.isReady) return;
+            vdfTestRunning = true;
+            document.getElementById('stopTestsBtnVDF').disabled = false;
+            realVDF.log('🤖 Small bot farm (10 bots) started (real VDF)', 'warning');
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => { if (vdfTestRunning) runBotVDF(i + 1); }, i * 200);
+            }
+        }
+
+        async function simulateMassBotAttackVDF() {
+            if (vdfTestRunning || !realVDF || !realVDF.isReady) return;
+            vdfTestRunning = true;
+            document.getElementById('stopTestsBtnVDF').disabled = false;
+            realVDF.log('🔥 MASSIVE bot attack (100 bots) started (real VDF)', 'error');
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => { if (vdfTestRunning) runBotVDF(i + 1); }, i * 100);
+            }
+        }
+
+        function stopAllTestsVDF() {
+            vdfTestRunning = false;
+            vdfTestBots.forEach(b => b.cancel && b.cancel());
+            vdfTestBots = [];
+            document.getElementById('stopTestsBtnVDF').disabled = true;
+            if (realVDF) {
+                realVDF.log('🛑 All VDF bot tests stopped by user', 'info');
+            }
+        }
+
+        // Each bot runs a real VDF proof in a loop until stopped
+        function runBotVDF(botId) {
+            let cancelled = false;
+            const bot = { cancel: () => { cancelled = true; } };
+            vdfTestBots.push(bot);
+            (async function botLoop() {
+                while (vdfTestRunning && !cancelled && realVDF && realVDF.isReady) {
+                    try {
+                        realVDF.logPerformance(`Bot #${botId} starting VDF`, 'working');
+                        const challenge = new Uint8Array([
+                            0xaa, 0xbb, 0xcc, 0xdd,
+                            ...new TextEncoder().encode(`bot-${botId}-${Date.now()}-${Math.random()}`)
+                        ]);
+                        const vdfResult = await realVDF.generateVDFProof(challenge);
+                        const isValid = await realVDF.verifyVDFProof(challenge, vdfResult.proof);
+                        if (isValid) {
+                            realVDF.totalProofs++;
+                            realVDF.totalTime += vdfResult.duration;
+                            realVDF.totalIterations += vdfResult.iterations;
+                            // Do NOT increment successfulVerifications here; it's handled in verifyVDFProof
+                            realVDF.updateStats();
+                            realVDF.log(`⚡ Bot #${botId} VDF completed (${vdfResult.duration.toFixed(2)}s)`, 'success');
+                            realVDF.logPerformance(`Bot #${botId}: ${vdfResult.iterations.toLocaleString()} iterations in ${vdfResult.duration.toFixed(2)}s`, 'success');
+                        } else {
+                            realVDF.log(`❌ Bot #${botId} VDF verification failed`, 'error');
+                        }
+                    } catch (e) {
+                        if (!cancelled) realVDF.log(`❌ Bot #${botId} error: ${e.message}`, 'error');
+                    }
+                    // Short delay between bot runs
+                    await new Promise(r => setTimeout(r, 300));
+                }
+            })();
+        }
     </script>
 </body>
 </html>
