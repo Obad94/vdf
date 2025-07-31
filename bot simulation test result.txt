@@ -1,0 +1,147 @@
+npm run test-only -- tests/bot-simulation.ts
+
+> @subspace/vdf@0.1.0 test-only
+> ts-node node_modules/.bin/tape tests/bot-simulation.ts tests/bot-simulation.ts
+
+TAP version 13
+# Bot Environment Simulation Tests
+🤖 Starting Bot Environment Simulation Tests
+📊 Testing VDF consistency outside browser environment
+
+✅ Bot Environment Simulation Tests Completed
+# Single Bot Repeated Attacks
+
+🤖 Test 1: Single Bot Repeated Attacks
+   Attempt 1: Gen=2554ms, Ver=2015ms, Valid=true
+# Small Bot Farm Attack (10 bots)
+
+🤖 Test 2: Small Bot Farm Attack (10 bots)
+   Bot 1: Gen=1966ms, Ver=1809ms
+   Bot 2: Gen=1881ms, Ver=1929ms
+   Bot 3: Gen=2127ms, Ver=1905ms
+   Bot 4: Gen=2273ms, Ver=2151ms
+   Bot 5: Gen=2592ms, Ver=2157ms
+   Bot 6: Gen=2529ms, Ver=2777ms
+   Bot 7: Gen=3330ms, Ver=1971ms
+   Bot 8: Gen=1889ms, Ver=1864ms
+   Bot 9: Gen=2302ms, Ver=2215ms
+   Bot 10: Gen=2340ms, Ver=2212ms
+
+📊 Small Bot Farm Analysis:
+   Total Bots: 10
+   Successful Proofs: 10/10
+   Average Generation Time: 2323ms
+   Min Time: 1881ms
+   Max Time: 3330ms
+   Time Variance: 1.77x
+   Total Attack Time: 44.2s
+   Economic Cost: $0.0012
+   Time per Bot: 4.42s
+ok 1 Small bot farm should show consistent timing (variance: 1.77x)
+# Medium Bot Farm Attack (50 bots)
+
+🤖 Test 3: Medium Bot Farm Attack (50 bots)
+   Attempt 2: Gen=1907ms, Ver=1754ms, Valid=true
+   Processed 10/50 bots, latest: 2021ms
+   Attempt 3: Gen=1973ms, Ver=1856ms, Valid=true
+   Attempt 4: Gen=1848ms, Ver=1768ms, Valid=true
+   Processed 20/50 bots, latest: 2824ms
+   Attempt 5: Gen=1870ms, Ver=2025ms, Valid=true
+   Attempt 6: Gen=1823ms, Ver=1720ms, Valid=true
+   Processed 30/50 bots, latest: 1845ms
+   Attempt 7: Gen=1870ms, Ver=1819ms, Valid=true
+   Attempt 8: Gen=1854ms, Ver=1825ms, Valid=true
+   Processed 40/50 bots, latest: 1904ms
+   Attempt 9: Gen=2152ms, Ver=1783ms, Valid=true
+   Attempt 10: Gen=1905ms, Ver=1886ms, Valid=true
+   Processed 50/50 bots, latest: 2241ms
+   Attempt 11: Gen=1972ms, Ver=1754ms, Valid=true
+
+📊 Medium Bot Farm Analysis:
+   Total Bots: 50
+   Successful Proofs: 50/50
+   Average Generation Time: 2177ms
+   Min Time: 1742ms
+   Max Time: 2935ms
+   Time Variance: 1.68x
+   Total Attack Time: 146.2s
+   Economic Cost: $0.0041
+   Time per Bot: 2.92s
+ok 2 Medium bot farm should maintain reasonable consistency (variance: 1.68x)
+# Large Bot Farm Attack (100 bots)
+
+🤖 Test 4: Large Bot Farm Attack (100 bots)
+   Processed 20/100 bots, latest: 2057ms
+   Processed 40/100 bots, latest: 2421ms
+   Processed 60/100 bots, latest: 1877ms
+   Processed 80/100 bots, latest: 1827ms
+   Processed 100/100 bots, latest: 2839ms
+
+📊 Large Bot Farm Analysis:
+   Total Bots: 100
+   Successful Proofs: 100/100
+   Average Generation Time: 2110ms
+   Min Time: 1794ms
+   Max Time: 3241ms
+   Time Variance: 1.81x
+   Total Attack Time: 211.0s
+   Economic Cost: $0.0059
+   Time per Bot: 2.11s
+
+🔍 Comparison with Browser Results:
+   Browser showed: 0.11s - 3.43s (30x variance)
+   Server shows: 1794ms - 3241ms (1.81x variance)
+ok 3 All 100 bots should succeed: 100/100
+# Progressive Difficulty Bot Attack
+
+🤖 Test 5: Progressive Difficulty Bot Attack
+   Bot 1: 1000 iterations, 2567ms
+   Bot 2: 1100 iterations, 2480ms
+   Bot 3: 1200 iterations, 2489ms
+   Bot 4: 1300 iterations, 2298ms
+   Bot 5: 1400 iterations, 2539ms
+   Bot 6: 1500 iterations, 2082ms
+   Bot 7: 1600 iterations, 2645ms
+   Bot 8: 1700 iterations, 2776ms
+   Bot 9: 1800 iterations, 2960ms
+   Bot 10: 1900 iterations, 2524ms
+   Bot 11: 2000 iterations, 2269ms
+   Bot 12: 2100 iterations, 2172ms
+   Bot 13: 2200 iterations, 2949ms
+   Bot 14: 2300 iterations, 5032ms
+   Bot 15: 2400 iterations, 3144ms
+   Bot 16: 2500 iterations, 2629ms
+   Bot 17: 2600 iterations, 2927ms
+   Bot 18: 2700 iterations, 3015ms
+   Bot 19: 2800 iterations, 3331ms
+   Bot 20: 2900 iterations, 3533ms
+
+📊 Progressive Difficulty Analysis:
+   Average time per iteration: 1.5417ms
+   First bot (1000 iter): 2567ms
+   Last bot (2900 iter): 3533ms
+   Scaling factor: 1.38x
+ok 4 Progressive difficulty should increase computation time
+   Attempt 12: Gen=2486ms, Ver=1651ms, Valid=true
+   Attempt 13: Gen=1806ms, Ver=1641ms, Valid=true
+   Attempt 14: Gen=1782ms, Ver=1687ms, Valid=true
+   Attempt 15: Gen=1745ms, Ver=1723ms, Valid=true
+   Attempt 16: Gen=2242ms, Ver=1723ms, Valid=true
+   Attempt 17: Gen=1787ms, Ver=1750ms, Valid=true
+   Attempt 18: Gen=1981ms, Ver=1602ms, Valid=true
+   Attempt 19: Gen=1909ms, Ver=1896ms, Valid=true
+   Attempt 20: Gen=2117ms, Ver=1603ms, Valid=true
+
+📊 Single Bot Analysis:
+   Average Generation Time: 1979ms
+   Min Time: 1745ms
+   Max Time: 2554ms
+   Time Variance: 1.46x
+   Success Rate: 20/20
+ok 5 VDF timing should be consistent (variance: 1.46x)
+
+1..5
+# tests 5
+# pass  5
+
+# ok

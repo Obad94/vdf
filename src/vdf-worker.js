@@ -8,16 +8,28 @@ function getVDFModule() {
         // Patch locateFile for WASM loading in worker
         self.Module = self.Module || {};
         self.Module.locateFile = function(path) {
-            if (path.endsWith('.wasm')) return 'dist/' + path;
+            console.log('[Worker] Locating file:', path);
+            if (path.endsWith('.wasm')) {
+                return 'dist/' + path;
+            }
             return path;
         };
-        vdfModulePromise = Module();
+        
+        // Add error handling for module loading
+        vdfModulePromise = Module().then(mod => {
+            console.log('[Worker] VDF module loaded successfully');
+            return mod;
+        }).catch(err => {
+            console.error('[Worker] Failed to load VDF module:', err);
+            throw err;
+        });
     }
     return vdfModulePromise;
 }
 
 self.onmessage = async function(e) {
     const { type, data } = e.data;
+    
     if (type === 'generate') {
         try {
             const mod = await getVDFModule();

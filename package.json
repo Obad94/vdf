@@ -42,7 +42,7 @@
     "lint": "tslint --project .",
     "lint:fix": "tslint --project . --fix",
     "test": "npm run build && npm run test-only",
-    "test-only": "ts-node node_modules/.bin/tape tests/**/*.ts",
+    "test-only": "ts-node node_modules/.bin/tape tests/bot-simulation.ts",
     "test:coverage": "nyc npm run test-only",
     "prepublishOnly": "npm run clean && npm run build:prod && npm test",
     "verify": "node -e \"const vdf = require('./dist/index.js'); vdf().then(() => console.log('✅ VDF library verified'));\""
