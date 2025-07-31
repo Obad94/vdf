@@ -108,6 +108,7 @@ fi
 
 echo "Copying WebAssembly files..."
 cp src/vdf.* dist/
+cp src/vdf-worker.js dist/
 
 # Verify build outputs
 echo "Verifying build outputs..."
