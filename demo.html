@@ -933,47 +933,46 @@ cp src/vdf.wasm ./</code></pre>
 
             realVDF.log(`🎫 Starting real VDF purchase: ${quantity}x ${selectedTicketType.toUpperCase()}`, 'vdf');
             
+            let successful = 0;
+            let attempted = 0;
             try {
                 for (let i = 0; i < quantity; i++) {
                     realVDF.log(`🛡️ Processing ticket ${i + 1}/${quantity} with real VDF`, 'warning');
-                    
                     // Generate unique challenge for each ticket (like your production tests)
                     const challenge = new Uint8Array([
                         0xaa, 0xbb, 0xcc, 0xdd,
                         ...new TextEncoder().encode(`ticket-${Date.now()}-${i}-${Math.random()}`)
                     ]);
-                    
                     // Real VDF computation using your module
                     const vdfResult = await realVDF.generateVDFProof(challenge);
-                    
                     // Verify the proof immediately (like your production tests)
                     const isValid = await realVDF.verifyVDFProof(challenge, vdfResult.proof);
-                    
-                    if (!isValid) {
-                        throw new Error(`Real VDF verification failed for ticket ${i + 1}`);
+                    attempted++;
+                    if (isValid) {
+                        successful++;
+                        realVDF.totalProofs++;
+                        realVDF.totalTime += vdfResult.duration;
+                        realVDF.totalIterations += vdfResult.iterations;
+                        realVDF.updateStats();
+                        realVDF.log(`✅ Ticket ${i + 1}/${quantity} VDF completed`, 'success');
+                        realVDF.logPerformance(`${vdfResult.iterations.toLocaleString()} iterations in ${vdfResult.duration.toFixed(3)}s`, 'success');
+                    } else {
+                        realVDF.log(`❌ Ticket ${i + 1}/${quantity} VDF verification failed`, 'error');
                     }
-                    
-                    // Update statistics
-                    realVDF.totalProofs++;
-                    realVDF.totalTime += vdfResult.duration;
-                    realVDF.totalIterations += vdfResult.iterations;
-                    realVDF.updateStats();
-                    
-                    realVDF.log(`✅ Ticket ${i + 1}/${quantity} VDF completed`, 'success');
-                    realVDF.logPerformance(`${vdfResult.iterations.toLocaleString()} iterations in ${vdfResult.duration.toFixed(3)}s`, 'success');
-                    
                     // Update progress
                     const progress = ((i + 1) / quantity) * 100;
                     document.getElementById('progressBar').style.width = progress + '%';
                     purchaseBtn.innerHTML = `<span class="spinner"></span> Processing ${i + 1}/${quantity} tickets...`;
                 }
-                
-                // All tickets completed
-                purchaseBtn.innerHTML = '✅ All Real VDF Tickets Purchased!';
-                purchaseBtn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
-                
-                realVDF.log(`🎉 All ${quantity} tickets purchased with real VDF protection!`, 'success');
-                
+                if (successful > 0) {
+                    purchaseBtn.innerHTML = `✅ ${successful} Real VDF Ticket(s) Purchased!`;
+                    purchaseBtn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+                    realVDF.log(`🎉 ${successful} ticket(s) purchased with real VDF protection!`, 'success');
+                } else {
+                    purchaseBtn.innerHTML = '❌ No tickets purchased (VDF failed)';
+                    purchaseBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+                    realVDF.log(`❌ All VDF verifications failed. No tickets purchased.`, 'error');
+                }
                 // Reset after delay
                 setTimeout(() => {
                     purchaseBtn.innerHTML = '🔒 Purchase Tickets (Real VDF)';
@@ -981,18 +980,15 @@ cp src/vdf.wasm ./</code></pre>
                     purchaseBtn.disabled = false;
                     document.getElementById('progressBar').style.width = '0%';
                     securityChallenge.classList.remove('active');
-                    
                     // Reset progress displays
                     document.getElementById('progressPercent').textContent = '0%';
                     document.getElementById('timeElapsed').textContent = '0.0s';
                     document.getElementById('currentRate').textContent = '--';
                 }, 4000);
-                
             } catch (error) {
                 realVDF.log(`❌ Real VDF purchase failed: ${error.message}`, 'error');
                 purchaseBtn.innerHTML = '❌ Real VDF Failed';
                 purchaseBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
-                
                 setTimeout(() => {
                     purchaseBtn.innerHTML = '🔒 Purchase Tickets (Real VDF)';
                     purchaseBtn.style.background = 'linear-gradient(135deg, #8A2BE2 0%, #9932CC 100%)';
@@ -1000,7 +996,6 @@ cp src/vdf.wasm ./</code></pre>
                     securityChallenge.classList.remove('active');
                 }, 3000);
             }
-            
             realVDF.isProcessing = false;
         }
 
@@ -1231,7 +1226,6 @@ cp src/vdf.wasm ./</code></pre>
                             realVDF.totalProofs++;
                             realVDF.totalTime += vdfResult.duration;
                             realVDF.totalIterations += vdfResult.iterations;
-                            // Do NOT increment successfulVerifications here; it's handled in verifyVDFProof
                             realVDF.updateStats();
                             realVDF.log(`⚡ Bot #${botId} VDF completed (${vdfResult.duration.toFixed(2)}s)`, 'success');
                             realVDF.logPerformance(`Bot #${botId}: ${vdfResult.iterations.toLocaleString()} iterations in ${vdfResult.duration.toFixed(2)}s`, 'success');
