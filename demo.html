@@ -691,45 +691,32 @@ cp src/vdf.wasm ./</code></pre>
     <script src="dist/vdf.js"></script>
     <script>
         // Real Autonomys VDF Integration - Based on your production tests
+        // Web Worker-based RealAutonomysVDF
         class RealAutonomysVDF {
             constructor() {
-                this.vdfInstance = null;
+                this.worker = null;
                 this.isReady = false;
-                this.iterations = 20000; // Fixed 20k iterations like your spec
-                this.keySize = 1024;     // 1024-bit keys
+                this.iterations = 20000;
+                this.keySize = 1024;
                 this.totalProofs = 0;
                 this.totalTime = 0;
                 this.totalIterations = 0;
                 this.successfulVerifications = 0;
                 this.isProcessing = false;
-                
                 this.init();
             }
 
             async init() {
                 try {
-                    this.log('🔄 Loading real Autonomys VDF module...', 'info');
+                    this.log('🔄 Loading real Autonomys VDF worker...', 'info');
                     this.updateStatus('Loading VDF...');
-                    
-                    // Try to load your actual VDF module from dist directory
-                    // Patch Module.locateFile to ensure vdf.wasm is loaded from dist
-                    window.Module = window.Module || {};
-                    window.Module.locateFile = function(path, prefix) {
-                        if (path.endsWith('.wasm')) {
-                            return 'dist/' + path;
-                        }
-                        return path;
-                    };
-                    await this.loadVDFModule();
-                    
+                    this.worker = new Worker('dist/vdf-worker.js');
+                    // Test worker by running a small validation
+                    await this.runInitialValidation();
                     this.isReady = true;
-                    this.log('✅ Real Autonomys VDF ready', 'success');
+                    this.log('✅ Real Autonomys VDF ready (Web Worker)', 'success');
                     this.updateStatus('VDF Ready');
                     document.getElementById('purchaseBtn').disabled = false;
-                    
-                    // Run a quick validation test like your production tests
-                    await this.runInitialValidation();
-                    
                 } catch (error) {
                     this.log(`❌ VDF loading failed: ${error.message}`, 'error');
                     this.updateStatus('VDF Required');
@@ -737,136 +724,95 @@ cp src/vdf.wasm ./</code></pre>
                 }
             }
 
-            async loadVDFModule() {
-                // Only support browser-compatible Emscripten output (vdf.js/Module)
-                try {
-                    if (typeof Module !== 'undefined' && typeof Module === 'function') {
-                        this.vdfInstance = await Module();
-                        // Wait for onRuntimeInitialized to ensure postRun is complete
-                        if (this.vdfInstance.onRuntimeInitialized) {
-                            await new Promise(resolve => {
-                                const prev = this.vdfInstance.onRuntimeInitialized;
-                                this.vdfInstance.onRuntimeInitialized = () => {
-                                    prev && prev();
-                                    resolve();
-                                };
-                            });
+            runWorkerJob(type, data) {
+                return new Promise((resolve, reject) => {
+                    const worker = this.worker;
+                    const onMessage = (e) => {
+                        if (e.data.type === 'result') {
+                            worker.removeEventListener('message', onMessage);
+                            resolve(e.data.proof !== undefined ? e.data.proof : e.data.isValid);
+                        } else if (e.data.type === 'error') {
+                            worker.removeEventListener('message', onMessage);
+                            reject(new Error(e.data.error));
                         }
-                        this.log('✅ Loaded VDF from Module()', 'success');
-                        return;
-                    } else if (typeof Module !== 'undefined' && Module.ready) {
-                        await Module.ready;
-                        // Wait for onRuntimeInitialized if present
-                        if (Module.onRuntimeInitialized) {
-                            await new Promise(resolve => {
-                                const prev = Module.onRuntimeInitialized;
-                                Module.onRuntimeInitialized = () => {
-                                    prev && prev();
-                                    resolve();
-                                };
-                            });
-                        }
-                        this.vdfInstance = Module;
-                        this.log('✅ Loaded VDF from Module.ready', 'success');
-                        return;
-                    }
-                } catch (e) {
-                    this.log('⚠️ Module loading failed', 'warning');
-                }
-
-                throw new Error('No VDF module found. Please copy your built VDF files to the demo directory.');
+                    };
+                    worker.addEventListener('message', onMessage);
+                    worker.postMessage({ type, data });
+                });
             }
 
             async runInitialValidation() {
-                // Run a small test similar to your production test
-                this.log('🧪 Running initial VDF validation...', 'info');
-                
-                try {
-                    // Use smaller parameters for initial test like your production tests
-                    const testChallenge = new Uint8Array([0xaa, 0xbb, 0xcc]);
-                    const testIterations = 50; // Small test like your production tests
-                    const testKeySize = 1024;
-                    
-                    const proof = this.vdfInstance.generate(testIterations, testChallenge, testKeySize, false);
-                    const isValid = this.vdfInstance.verify(testIterations, testChallenge, proof, testKeySize, false);
-                    
-                    if (isValid) {
-                        this.log('✅ VDF validation test passed', 'success');
-                        this.log(`   Proof size: ${proof.length} bytes`, 'info');
-                    } else {
-                        throw new Error('VDF validation test failed');
-                    }
-                    
-                } catch (error) {
-                    this.log(`❌ VDF validation failed: ${error.message}`, 'error');
-                    throw error;
+                this.log('🧪 Running initial VDF validation (Web Worker)...', 'info');
+                const testChallenge = [0xaa, 0xbb, 0xcc];
+                const testIterations = 50;
+                const testKeySize = 1024;
+                const proof = await this.runWorkerJob('generate', {
+                    iterations: testIterations,
+                    challenge: testChallenge,
+                    keySize: testKeySize,
+                    isPietrzak: false
+                });
+                const isValid = await this.runWorkerJob('verify', {
+                    iterations: testIterations,
+                    challenge: testChallenge,
+                    proof: proof,
+                    keySize: testKeySize,
+                    isPietrzak: false
+                });
+                if (isValid) {
+                    this.log('✅ VDF validation test passed', 'success');
+                    this.log(`   Proof size: ${proof.length} bytes`, 'info');
+                } else {
+                    throw new Error('VDF validation test failed');
                 }
             }
 
             async generateVDFProof(challenge) {
-                if (!this.isReady || !this.vdfInstance) {
+                if (!this.isReady || !this.worker) {
                     throw new Error('VDF not ready');
                 }
-
                 this.log(`🔄 Starting VDF computation (${this.iterations.toLocaleString()} iterations)`, 'vdf');
                 this.log(`  Challenge: ${challenge.length} bytes`, 'info');
                 this.log(`  Key size: ${this.keySize} bits`, 'info');
                 this.log(`  Algorithm: Wesolowski`, 'info');
-
                 const startTime = performance.now();
                 let progressInterval;
-                
                 try {
-                    // Start progress tracking
                     let estimatedProgress = 0;
                     progressInterval = setInterval(() => {
                         const elapsed = (performance.now() - startTime) / 1000;
-                        
-                        // Estimate progress (VDF typically takes 3-6 seconds for 20k iterations)
-                        const estimatedDuration = 5; // seconds
+                        const estimatedDuration = 5;
                         estimatedProgress = Math.min((elapsed / estimatedDuration) * 100, 95);
-                        
                         document.getElementById('progressPercent').textContent = Math.floor(estimatedProgress) + '%';
                         document.getElementById('progressBar').style.width = estimatedProgress + '%';
                         document.getElementById('timeElapsed').textContent = elapsed.toFixed(1) + 's';
-                        
                         const rate = (this.iterations * estimatedProgress / 100) / elapsed;
                         document.getElementById('currentRate').textContent = rate.toFixed(0);
-                        
                         this.logPerformance(`VDF progress: ${estimatedProgress.toFixed(1)}%`, 'info');
                     }, 200);
-
-                    // Generate real VDF proof using your module
-                    const proof = this.vdfInstance.generate(
-                        this.iterations,    // 20,000 iterations 
-                        challenge,          // Challenge bytes
-                        this.keySize,       // 1024-bit key
-                        false              // Wesolowski (not Pietrzak)
-                    );
-
+                    const proof = await this.runWorkerJob('generate', {
+                        iterations: this.iterations,
+                        challenge: Array.from(challenge),
+                        keySize: this.keySize,
+                        isPietrzak: false
+                    });
                     clearInterval(progressInterval);
-                    
                     const endTime = performance.now();
                     const duration = (endTime - startTime) / 1000;
-
-                    // Update final progress
                     document.getElementById('progressPercent').textContent = '100%';
                     document.getElementById('progressBar').style.width = '100%';
                     document.getElementById('timeElapsed').textContent = duration.toFixed(2) + 's';
                     document.getElementById('currentRate').textContent = (this.iterations / duration).toFixed(0);
-
                     this.log(`✅ VDF proof generated successfully`, 'success');
                     this.log(`  Duration: ${duration.toFixed(3)} seconds`, 'success');
                     this.log(`  Proof size: ${proof.length} bytes`, 'info');
                     this.log(`  Rate: ${(this.iterations / duration).toFixed(0)} iterations/second`, 'success');
-
                     return {
                         proof: proof,
                         duration: duration,
                         iterations: this.iterations,
                         challenge: challenge
                     };
-
                 } catch (error) {
                     if (progressInterval) clearInterval(progressInterval);
                     this.log(`❌ VDF generation failed: ${error.message}`, 'error');
@@ -876,21 +822,16 @@ cp src/vdf.wasm ./</code></pre>
 
             async verifyVDFProof(challenge, proof) {
                 this.log('🔍 Verifying VDF proof...', 'vdf');
-                
                 const startTime = performance.now();
-                
                 try {
-                    // Verify using your VDF module
-                    const isValid = this.vdfInstance.verify(
-                        this.iterations,    // Same iterations
-                        challenge,          // Same challenge
-                        proof,             // Generated proof
-                        this.keySize,      // Same key size
-                        false              // Wesolowski
-                    );
-
+                    const isValid = await this.runWorkerJob('verify', {
+                        iterations: this.iterations,
+                        challenge: Array.from(challenge),
+                        proof: Array.from(proof),
+                        keySize: this.keySize,
+                        isPietrzak: false
+                    });
                     const verifyTime = (performance.now() - startTime) / 1000;
-
                     if (isValid) {
                         this.successfulVerifications++;
                         this.log(`✅ VDF proof verification PASSED`, 'success');
@@ -898,9 +839,7 @@ cp src/vdf.wasm ./</code></pre>
                     } else {
                         this.log(`❌ VDF proof verification FAILED`, 'error');
                     }
-
                     return isValid;
-
                 } catch (error) {
                     this.log(`❌ VDF verification error: ${error.message}`, 'error');
                     return false;
@@ -912,7 +851,6 @@ cp src/vdf.wasm ./</code></pre>
                 document.getElementById('totalIterations').textContent = this.totalIterations.toLocaleString();
                 document.getElementById('totalTime').textContent = this.totalTime.toFixed(2) + 's';
                 document.getElementById('totalPurchases').textContent = this.totalProofs;
-                
                 if (this.totalProofs > 0) {
                     const successRate = ((this.successfulVerifications / this.totalProofs) * 100).toFixed(1);
                     document.getElementById('successRate').textContent = successRate + '%';
@@ -937,11 +875,9 @@ cp src/vdf.wasm ./</code></pre>
                 entry.textContent = `[${timestamp}] ${message}`;
                 log.appendChild(entry);
                 log.scrollTop = log.scrollHeight;
-
                 while (log.children.length > 50) {
                     log.removeChild(log.firstChild);
                 }
-                
                 console.log(`[VDF] ${message}`);
             }
 
@@ -953,7 +889,6 @@ cp src/vdf.wasm ./</code></pre>
                 entry.textContent = `[${timestamp}] ${message}`;
                 log.appendChild(entry);
                 log.scrollTop = log.scrollHeight;
-
                 while (log.children.length > 50) {
                     log.removeChild(log.firstChild);
                 }
