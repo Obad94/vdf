@@ -687,8 +687,8 @@ cp src/vdf.wasm ./</code></pre>
         </div>
     </main>
 
-    <!-- Load your actual VDF module -->
-    <script src="./vdf.js"></script>
+    <!-- Load your actual VDF module from dist directory -->
+    <script src="dist/vdf.js"></script>
     <script>
         // Real Autonomys VDF Integration - Based on your production tests
         class RealAutonomysVDF {
@@ -711,7 +711,15 @@ cp src/vdf.wasm ./</code></pre>
                     this.log('🔄 Loading real Autonomys VDF module...', 'info');
                     this.updateStatus('Loading VDF...');
                     
-                    // Try to load your actual VDF module
+                    // Try to load your actual VDF module from dist directory
+                    // Patch Module.locateFile to ensure vdf.wasm is loaded from dist
+                    window.Module = window.Module || {};
+                    window.Module.locateFile = function(path, prefix) {
+                        if (path.endsWith('.wasm')) {
+                            return 'dist/' + path;
+                        }
+                        return path;
+                    };
                     await this.loadVDFModule();
                     
                     this.isReady = true;
