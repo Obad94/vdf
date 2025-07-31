@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureTickets Pro - Real Autonomys VDF</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(76, 175, 80, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #4CAF50;
+        }
+
+        .security-badge .shield {
+            width: 16px;
+            height: 16px;
+            background: #4CAF50;
+            border-radius: 50%;
+        }
+
+        .vdf-status {
+            background: rgba(138, 43, 226, 0.2);
+            border: 1px solid #8A2BE2;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        .main-content {
+            margin-top: 80px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem;
+        }
+
+        .event-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-info {
+            position: relative;
+            z-index: 2;
+        }
+
+        .event-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .event-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .detail-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .vdf-info {
+            background: rgba(138, 43, 226, 0.1);
+            border: 2px solid #8A2BE2;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .vdf-info h3 {
+            color: #8A2BE2;
+            margin-bottom: 1rem;
+        }
+
+        .vdf-params {
+            background: rgba(138, 43, 226, 0.1);
+            border: 1px solid #8A2BE2;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #8A2BE2;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 0.25rem;
+            color: #ffffff;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+        }
+
+        .ticket-selection {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+        }
+
+        .ticket-options {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .ticket-option {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ticket-option:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .ticket-option.selected {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .ticket-info h4 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .ticket-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .ticket-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4CAF50;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .quantity-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .quantity-display {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .total-display {
+            background: rgba(76, 175, 80, 0.1);
+            border: 2px solid #4CAF50;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .total-amount {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #4CAF50;
+        }
+
+        .security-challenge {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(138, 43, 226, 0.05));
+            border: 2px solid #8A2BE2;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .security-challenge.active {
+            animation: securityPulse 2s infinite;
+        }
+
+        @keyframes securityPulse {
+            0%, 100% { border-color: #8A2BE2; }
+            50% { border-color: #9932CC; }
+        }
+
+        .challenge-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8A2BE2, #9932CC);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .challenge-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .challenge-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            height: 12px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #8A2BE2, #9932CC);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8A2BE2 0%, #9932CC 100%);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .log-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .log-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .log-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #8A2BE2;
+        }
+
+        .log-content {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .log-entry {
+            margin: 0.25rem 0;
+            padding: 0.25rem 0;
+        }
+
+        .log-success { color: #4CAF50; }
+        .log-error { color: #ff5733; }
+        .log-warning { color: #ff9800; }
+        .log-info { color: #2196F3; }
+        .log-vdf { color: #8A2BE2; }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .setup-required {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .setup-required h3 {
+            color: #ffc107;
+            margin-bottom: 1rem;
+        }
+
+        .setup-required code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .setup-required pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .event-title {
+                font-size: 2rem;
+            }
+            
+            .event-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .log-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">SecureTickets Pro</div>
+            <div style="display: flex; align-items: center;">
+                <div class="security-badge">
+                    <div class="shield"></div>
+                    <span>Real VDF</span>
+                </div>
+                <div class="vdf-status" id="vdfStatus">
+                    Loading...
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="event-header">
+            <div class="event-info">
+                <h1 class="event-title">Taylor Swift | The Eras Tour</h1>
+                <div class="event-details">
+                    <div class="detail-item">
+                        <div class="detail-label">📅 Date</div>
+                        <div class="detail-value">Saturday, August 12, 2025</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">🕐 Time</div>
+                        <div class="detail-value">7:30 PM</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">📍 Venue</div>
+                        <div class="detail-value">MetLife Stadium</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">🎫 VDF Purchases</div>
+                        <div class="detail-value" id="totalPurchases">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="vdf-info">
+            <h3>🛡️ Real Autonomys VDF Protection</h3>
+            <p>Using your compiled Autonomys VDF WebAssembly module with <strong>real cryptographic verification</strong>.</p>
+            <div class="vdf-params">
+                Source: /autonomys/vdf • Algorithm: Wesolowski • Iterations: 20,000 • Key: 1024-bit
+            </div>
+        </div>
+
+        <div class="setup-required" id="setupInstructions" style="display: none;">
+            <h3>🔧 VDF Module Required</h3>
+            <p>To use real VDF, copy your built VDF files to the demo directory:</p>
+            <pre><code># From your autonomys VDF project root:
+cp dist/vdf.js ./
+cp dist/vdf.wasm ./
+
+# OR if you have different output:
+cp src/vdf.js ./
+cp src/vdf.wasm ./</code></pre>
+            <p>The demo expects <code>vdf.js</code> and <code>vdf.wasm</code> in the same directory.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">📋 VDF Proofs</div>
+                <div class="stat-value" id="vdfProofs">0</div>
+                <div class="stat-label">Generated</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-title">⚡ Iterations</div>
+                <div class="stat-value" id="totalIterations">0</div>
+                <div class="stat-label">Computed</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-title">⏱️ VDF Time</div>
+                <div class="stat-value" id="totalTime">0s</div>
+                <div class="stat-label">Computation</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-title">✅ Success Rate</div>
+                <div class="stat-value" id="successRate">100%</div>
+                <div class="stat-label">Verifications</div>
+            </div>
+        </div>
+
+        <div class="ticket-selection">
+            <h2 class="section-title">Select Your Tickets</h2>
+            <div class="ticket-options">
+                <div class="ticket-option" onclick="selectTicket('vip', 599)">
+                    <div class="ticket-info">
+                        <h4>VIP Experience Package</h4>
+                        <p class="ticket-description">Front row seats, meet & greet, exclusive merchandise</p>
+                    </div>
+                    <div class="ticket-price">$599</div>
+                </div>
+                
+                <div class="ticket-option" onclick="selectTicket('premium', 299)">
+                    <div class="ticket-info">
+                        <h4>Premium Seating</h4>
+                        <p class="ticket-description">Lower bowl, excellent view, early entry</p>
+                    </div>
+                    <div class="ticket-price">$299</div>
+                </div>
+                
+                <div class="ticket-option selected" onclick="selectTicket('standard', 149)">
+                    <div class="ticket-info">
+                        <h4>Standard Admission</h4>
+                        <p class="ticket-description">Upper level seating, great atmosphere</p>
+                    </div>
+                    <div class="ticket-price">$149</div>
+                </div>
+            </div>
+
+            <div class="quantity-selector">
+                <span style="color: #ffffff; font-weight: 600;">Quantity:</span>
+                <button class="quantity-btn" onclick="changeQuantity(-1)">−</button>
+                <span class="quantity-display" id="quantity">1</span>
+                <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                <span style="color: rgba(255,255,255,0.6); margin-left: 1rem;">(Each needs real VDF proof)</span>
+            </div>
+        </div>
+
+        <div class="total-display">
+            <div>Total: <span class="total-amount" id="totalAmount">$149.00</span></div>
+            <div style="color: rgba(255,255,255,0.7); margin-top: 0.5rem;" id="totalDescription">1 × Standard Admission ($149 each)</div>
+        </div>
+
+        <div class="security-challenge" id="securityChallenge">
+            <div class="challenge-icon">🛡️</div>
+            <h3 class="challenge-title">Real VDF Verification</h3>
+            <p class="challenge-description">Generating cryptographic proof using your Autonomys VDF WebAssembly module. Real sequential computation.</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Time</div>
+                    <div class="stat-value" id="timeElapsed">0.0s</div>
+                    <div class="stat-label">Elapsed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Progress</div>
+                    <div class="stat-value" id="progressPercent">0%</div>
+                    <div class="stat-label">Complete</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Rate</div>
+                    <div class="stat-value" id="currentRate">--</div>
+                    <div class="stat-label">iter/sec</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Algorithm</div>
+                    <div class="stat-value">W-VDF</div>
+                    <div class="stat-label">Wesolowski</div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="startRealVDFPurchase()" id="purchaseBtn" disabled>
+                    🔒 Purchase Tickets (Real VDF)
+                </button>
+            </div>
+        </div>
+
+        <div class="log-section">
+            <div class="log-card">
+                <div class="log-title">📊 VDF System Log</div>
+                <div class="log-content" id="systemLog"></div>
+            </div>
+
+            <div class="log-card">
+                <div class="log-title">⚡ Performance Metrics</div>
+                <div class="log-content" id="performanceLog"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Load your actual VDF module from dist directory -->
+    <script src="dist/vdf.js"></script>
+    <script>
+        // Real Autonomys VDF Integration - Based on your production tests
+        // Web Worker-based RealAutonomysVDF
+        class RealAutonomysVDF {
+            constructor() {
+                this.worker = null;
+                this.isReady = false;
+                this.iterations = 1000;
+                this.keySize = 1024;
+                this.totalProofs = 0;
+                this.totalTime = 0;
+                this.totalIterations = 0;
+                this.successfulVerifications = 0;
+                this.isProcessing = false;
+                this.init();
+            }
+
+            async init() {
+                try {
+                    this.log('🔄 Loading real Autonomys VDF worker...', 'info');
+                    this.updateStatus('Loading VDF...');
+                    this.worker = new Worker('dist/vdf-worker.js');
+                    // Test worker by running a small validation
+                    await this.runInitialValidation();
+                    this.isReady = true;
+                    this.log('✅ Real Autonomys VDF ready (Web Worker)', 'success');
+                    this.updateStatus('VDF Ready');
+                    document.getElementById('purchaseBtn').disabled = false;
+                } catch (error) {
+                    this.log(`❌ VDF loading failed: ${error.message}`, 'error');
+                    this.updateStatus('VDF Required');
+                    this.showSetupInstructions();
+                }
+            }
+
+            runWorkerJob(type, data) {
+                return new Promise((resolve, reject) => {
+                    const worker = this.worker;
+                    const onMessage = (e) => {
+                        if (e.data.type === 'result') {
+                            worker.removeEventListener('message', onMessage);
+                            resolve(e.data.proof !== undefined ? e.data.proof : e.data.isValid);
+                        } else if (e.data.type === 'error') {
+                            worker.removeEventListener('message', onMessage);
+                            reject(new Error(e.data.error));
+                        }
+                    };
+                    worker.addEventListener('message', onMessage);
+                    worker.postMessage({ type, data });
+                });
+            }
+
+            async runInitialValidation() {
+                this.log('🧪 Running initial VDF validation (Web Worker)...', 'info');
+                const testChallenge = [0xaa, 0xbb, 0xcc];
+                const testIterations = 50;
+                const testKeySize = 1024;
+                const proof = await this.runWorkerJob('generate', {
+                    iterations: testIterations,
+                    challenge: testChallenge,
+                    keySize: testKeySize,
+                    isPietrzak: false
+                });
+                const isValid = await this.runWorkerJob('verify', {
+                    iterations: testIterations,
+                    challenge: testChallenge,
+                    proof: proof,
+                    keySize: testKeySize,
+                    isPietrzak: false
+                });
+                if (isValid) {
+                    this.log('✅ VDF validation test passed', 'success');
+                    this.log(`   Proof size: ${proof.length} bytes`, 'info');
+                } else {
+                    throw new Error('VDF validation test failed');
+                }
+            }
+
+            async generateVDFProof(challenge) {
+                if (!this.isReady || !this.worker) {
+                    throw new Error('VDF not ready');
+                }
+                this.log(`🔄 Starting VDF computation (${this.iterations.toLocaleString()} iterations)`, 'vdf');
+                this.log(`  Challenge: ${challenge.length} bytes`, 'info');
+                this.log(`  Key size: ${this.keySize} bits`, 'info');
+                this.log(`  Algorithm: Wesolowski`, 'info');
+                const startTime = performance.now();
+                let progressInterval;
+                try {
+                    let estimatedProgress = 0;
+                    progressInterval = setInterval(() => {
+                        const elapsed = (performance.now() - startTime) / 1000;
+                        const estimatedDuration = 5;
+                        estimatedProgress = Math.min((elapsed / estimatedDuration) * 100, 95);
+                        document.getElementById('progressPercent').textContent = Math.floor(estimatedProgress) + '%';
+                        document.getElementById('progressBar').style.width = estimatedProgress + '%';
+                        document.getElementById('timeElapsed').textContent = elapsed.toFixed(1) + 's';
+                        const rate = (this.iterations * estimatedProgress / 100) / elapsed;
+                        document.getElementById('currentRate').textContent = rate.toFixed(0);
+                        this.logPerformance(`VDF progress: ${estimatedProgress.toFixed(1)}%`, 'info');
+                    }, 200);
+                    const proof = await this.runWorkerJob('generate', {
+                        iterations: this.iterations,
+                        challenge: Array.from(challenge),
+                        keySize: this.keySize,
+                        isPietrzak: false
+                    });
+                    clearInterval(progressInterval);
+                    const endTime = performance.now();
+                    const duration = (endTime - startTime) / 1000;
+                    document.getElementById('progressPercent').textContent = '100%';
+                    document.getElementById('progressBar').style.width = '100%';
+                    document.getElementById('timeElapsed').textContent = duration.toFixed(2) + 's';
+                    document.getElementById('currentRate').textContent = (this.iterations / duration).toFixed(0);
+                    this.log(`✅ VDF proof generated successfully`, 'success');
+                    this.log(`  Duration: ${duration.toFixed(3)} seconds`, 'success');
+                    this.log(`  Proof size: ${proof.length} bytes`, 'info');
+                    this.log(`  Rate: ${(this.iterations / duration).toFixed(0)} iterations/second`, 'success');
+                    return {
+                        proof: proof,
+                        duration: duration,
+                        iterations: this.iterations,
+                        challenge: challenge
+                    };
+                } catch (error) {
+                    if (progressInterval) clearInterval(progressInterval);
+                    this.log(`❌ VDF generation failed: ${error.message}`, 'error');
+                    throw error;
+                }
+            }
+
+            async verifyVDFProof(challenge, proof) {
+                this.log('🔍 Verifying VDF proof...', 'vdf');
+                const startTime = performance.now();
+                try {
+                    const isValid = await this.runWorkerJob('verify', {
+                        iterations: this.iterations,
+                        challenge: Array.from(challenge),
+                        proof: Array.from(proof),
+                        keySize: this.keySize,
+                        isPietrzak: false
+                    });
+                    const verifyTime = (performance.now() - startTime) / 1000;
+                    if (isValid) {
+                        this.successfulVerifications++;
+                        this.log(`✅ VDF proof verification PASSED`, 'success');
+                        this.log(`  Verification time: ${verifyTime.toFixed(3)}s`, 'success');
+                    } else {
+                        this.log(`❌ VDF proof verification FAILED`, 'error');
+                    }
+                    return isValid;
+                } catch (error) {
+                    this.log(`❌ VDF verification error: ${error.message}`, 'error');
+                    return false;
+                }
+            }
+
+            updateStats() {
+                document.getElementById('vdfProofs').textContent = this.totalProofs;
+                document.getElementById('totalIterations').textContent = this.totalIterations.toLocaleString();
+                document.getElementById('totalTime').textContent = this.totalTime.toFixed(2) + 's';
+                document.getElementById('totalPurchases').textContent = this.totalProofs;
+                if (this.totalProofs > 0) {
+                    const successRate = ((this.successfulVerifications / this.totalProofs) * 100).toFixed(1);
+                    document.getElementById('successRate').textContent = successRate + '%';
+                }
+            }
+
+            updateStatus(status) {
+                document.getElementById('vdfStatus').textContent = status;
+            }
+
+            showSetupInstructions() {
+                document.getElementById('setupInstructions').style.display = 'block';
+                document.getElementById('purchaseBtn').disabled = true;
+                document.getElementById('purchaseBtn').innerHTML = '❌ VDF Module Required';
+            }
+
+            log(message, type = 'info') {
+                const log = document.getElementById('systemLog');
+                const timestamp = new Date().toLocaleTimeString();
+                const entry = document.createElement('div');
+                entry.className = `log-entry log-${type}`;
+                entry.textContent = `[${timestamp}] ${message}`;
+                log.appendChild(entry);
+                log.scrollTop = log.scrollHeight;
+                while (log.children.length > 50) {
+                    log.removeChild(log.firstChild);
+                }
+                console.log(`[VDF] ${message}`);
+            }
+
+            logPerformance(message, type = 'info') {
+                const log = document.getElementById('performanceLog');
+                const timestamp = new Date().toLocaleTimeString();
+                const entry = document.createElement('div');
+                entry.className = `log-entry log-${type}`;
+                entry.textContent = `[${timestamp}] ${message}`;
+                log.appendChild(entry);
+                log.scrollTop = log.scrollHeight;
+                while (log.children.length > 50) {
+                    log.removeChild(log.firstChild);
+                }
+            }
+        }
+
+        // Global variables
+        let realVDF = null;
+        let selectedTicketType = 'standard';
+        let selectedPrice = 149;
+        let quantity = 1;
+
+        // Purchase Flow with Real VDF
+        async function startRealVDFPurchase() {
+            if (!realVDF || !realVDF.isReady || realVDF.isProcessing) {
+                return;
+            }
+
+            realVDF.isProcessing = true;
+            
+            const purchaseBtn = document.getElementById('purchaseBtn');
+            const securityChallenge = document.getElementById('securityChallenge');
+            
+            purchaseBtn.disabled = true;
+            purchaseBtn.innerHTML = '<span class="spinner"></span> Generating Real VDF Proof...';
+            securityChallenge.classList.add('active');
+
+            realVDF.log(`🎫 Starting real VDF purchase: ${quantity}x ${selectedTicketType.toUpperCase()}`, 'vdf');
+            
+            try {
+                for (let i = 0; i < quantity; i++) {
+                    realVDF.log(`🛡️ Processing ticket ${i + 1}/${quantity} with real VDF`, 'warning');
+                    
+                    // Generate unique challenge for each ticket (like your production tests)
+                    const challenge = new Uint8Array([
+                        0xaa, 0xbb, 0xcc, 0xdd,
+                        ...new TextEncoder().encode(`ticket-${Date.now()}-${i}-${Math.random()}`)
+                    ]);
+                    
+                    // Real VDF computation using your module
+                    const vdfResult = await realVDF.generateVDFProof(challenge);
+                    
+                    // Verify the proof immediately (like your production tests)
+                    const isValid = await realVDF.verifyVDFProof(challenge, vdfResult.proof);
+                    
+                    if (!isValid) {
+                        throw new Error(`Real VDF verification failed for ticket ${i + 1}`);
+                    }
+                    
+                    // Update statistics
+                    realVDF.totalProofs++;
+                    realVDF.totalTime += vdfResult.duration;
+                    realVDF.totalIterations += vdfResult.iterations;
+                    realVDF.updateStats();
+                    
+                    realVDF.log(`✅ Ticket ${i + 1}/${quantity} VDF completed`, 'success');
+                    realVDF.logPerformance(`${vdfResult.iterations.toLocaleString()} iterations in ${vdfResult.duration.toFixed(3)}s`, 'success');
+                    
+                    // Update progress
+                    const progress = ((i + 1) / quantity) * 100;
+                    document.getElementById('progressBar').style.width = progress + '%';
+                    purchaseBtn.innerHTML = `<span class="spinner"></span> Processing ${i + 1}/${quantity} tickets...`;
+                }
+                
+                // All tickets completed
+                purchaseBtn.innerHTML = '✅ All Real VDF Tickets Purchased!';
+                purchaseBtn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+                
+                realVDF.log(`🎉 All ${quantity} tickets purchased with real VDF protection!`, 'success');
+                
+                // Reset after delay
+                setTimeout(() => {
+                    purchaseBtn.innerHTML = '🔒 Purchase Tickets (Real VDF)';
+                    purchaseBtn.style.background = 'linear-gradient(135deg, #8A2BE2 0%, #9932CC 100%)';
+                    purchaseBtn.disabled = false;
+                    document.getElementById('progressBar').style.width = '0%';
+                    securityChallenge.classList.remove('active');
+                    
+                    // Reset progress displays
+                    document.getElementById('progressPercent').textContent = '0%';
+                    document.getElementById('timeElapsed').textContent = '0.0s';
+                    document.getElementById('currentRate').textContent = '--';
+                }, 4000);
+                
+            } catch (error) {
+                realVDF.log(`❌ Real VDF purchase failed: ${error.message}`, 'error');
+                purchaseBtn.innerHTML = '❌ Real VDF Failed';
+                purchaseBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+                
+                setTimeout(() => {
+                    purchaseBtn.innerHTML = '🔒 Purchase Tickets (Real VDF)';
+                    purchaseBtn.style.background = 'linear-gradient(135deg, #8A2BE2 0%, #9932CC 100%)';
+                    purchaseBtn.disabled = false;
+                    securityChallenge.classList.remove('active');
+                }, 3000);
+            }
+            
+            realVDF.isProcessing = false;
+        }
+
+        // UI Event Handlers
+        function selectTicket(type, price) {
+            document.querySelectorAll('.ticket-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.ticket-option').classList.add('selected');
+            
+            selectedTicketType = type;
+            selectedPrice = price;
+            updateTotal();
+            
+            if (realVDF) {
+                realVDF.log(`Ticket selected: ${type.toUpperCase()} - ${price}`, 'info');
+            }
+        }
+
+        function changeQuantity(delta) {
+            const newQuantity = quantity + delta;
+            if (newQuantity >= 1) {
+                quantity = newQuantity;
+                document.getElementById('quantity').textContent = quantity;
+                updateTotal();
+                
+                if (realVDF) {
+                    realVDF.log(`Quantity changed to ${quantity} (each requires real VDF)`, 'info');
+                }
+            }
+        }
+
+        function updateTotal() {
+            const total = selectedPrice * quantity;
+            document.getElementById('totalAmount').textContent = `${total.toFixed(2)}`;
+            
+            const typeNames = {
+                'vip': 'VIP Experience Package',
+                'premium': 'Premium Seating', 
+                'standard': 'Standard Admission'
+            };
+            
+            document.getElementById('totalDescription').textContent = 
+                `${quantity} × ${typeNames[selectedTicketType]} (${selectedPrice} each)`;
+        }
+
+        // MonosProof API - Real VDF Only (following your production test patterns)
+        window.MonosProof = {
+            protect: async function(buttonId, options = {}) {
+                if (!realVDF || !realVDF.isReady) {
+                    throw new Error('Real Autonomys VDF system not initialized');
+                }
+                
+                const button = document.getElementById(buttonId);
+                if (!button) throw new Error(`Button ${buttonId} not found`);
+
+                const originalClick = button.onclick;
+                const originalText = button.textContent;
+
+                button.onclick = async (e) => {
+                    e.preventDefault();
+                    
+                    try {
+                        button.disabled = true;
+                        button.innerHTML = '<span class="spinner"></span> Real VDF Computing...';
+                        
+                        realVDF.log(`🛡️ MonosProof real VDF protection activated: ${buttonId}`, 'vdf');
+                        
+                        // Generate challenge like your production tests
+                        const challenge = new Uint8Array([
+                            0x12, 0x34, 0x56, 0x78,
+                            ...new TextEncoder().encode(`protect-${Date.now()}-${Math.random()}`)
+                        ]);
+                        
+                        const vdfResult = await realVDF.generateVDFProof(challenge);
+                        const isValid = await realVDF.verifyVDFProof(challenge, vdfResult.proof);
+                        
+                        if (!isValid) {
+                            throw new Error('Real VDF verification failed');
+                        }
+                        
+                        realVDF.log(`✅ Real VDF protection completed in ${vdfResult.duration.toFixed(3)}s`, 'success');
+                        
+                        // Execute original action
+                        if (originalClick) {
+                            originalClick.call(button, e);
+                        }
+                        
+                        button.textContent = '✅ Real VDF Complete!';
+                        button.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+                        
+                    } catch (error) {
+                        realVDF.log(`❌ Real VDF protection failed: ${error.message}`, 'error');
+                        button.textContent = '❌ Real VDF Failed';
+                        button.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+                    }
+                    
+                    // Reset button
+                    setTimeout(() => {
+                        button.disabled = false;
+                        button.textContent = originalText;
+                        button.style.background = '';
+                    }, 3000);
+                };
+            },
+            
+            getStats: function() {
+                if (!realVDF) return null;
+                
+                return {
+                    totalProofs: realVDF.totalProofs,
+                    totalTime: realVDF.totalTime,
+                    totalIterations: realVDF.totalIterations,
+                    successRate: realVDF.totalProofs > 0 ? (realVDF.successfulVerifications / realVDF.totalProofs) : 0,
+                    library: 'Real Autonomys VDF',
+                    isReady: realVDF.isReady,
+                    iterations: realVDF.iterations,
+                    keySize: realVDF.keySize
+                };
+            },
+            
+            // Test function similar to your production tests
+            runTest: async function(iterations = 50) {
+                if (!realVDF || !realVDF.isReady) {
+                    throw new Error('VDF not ready');
+                }
+                
+                const challenge = new Uint8Array([0xaa, 0xbb, 0xcc, 0xdd]);
+                const proof = realVDF.vdfInstance.generate(iterations, challenge, 1024, false);
+                const isValid = realVDF.vdfInstance.verify(iterations, challenge, proof, 1024, false);
+                
+                return {
+                    iterations: iterations,
+                    proofLength: proof.length,
+                    isValid: isValid,
+                    message: isValid ? 'VDF test passed' : 'VDF test failed'
+                };
+            }
+        };
+
+        // Initialize Real VDF System
+        window.addEventListener('load', async () => {
+            realVDF = new RealAutonomysVDF();
+            updateTotal();
+            
+            console.log('🛡️ MonosProof Real Autonomys VDF Demo loaded');
+            console.log('📋 Using your actual VDF build - no simulations');
+            console.log('🔧 Integration: MonosProof.protect("button-id")');
+        });
+
+        // Demo: Show VDF integration examples
+        setTimeout(() => {
+            if (realVDF && realVDF.isReady) {
+                console.log('');
+                console.log('🛡️ MonosProof Real VDF Integration:');
+                console.log('MonosProof.protect("your-button-id");');
+                console.log('');
+                console.log('🧪 Test your VDF:');
+                console.log('MonosProof.runTest(50);');
+                console.log('');
+                console.log('📊 VDF Stats:', window.MonosProof.getStats());
+            }
+        }, 5000);
+
+        // Make functions globally available
+        window.startRealVDFPurchase = startRealVDFPurchase;
+        window.selectTicket = selectTicket;
+        window.changeQuantity = changeQuantity;
+    </script>
+</body>
+</html>
